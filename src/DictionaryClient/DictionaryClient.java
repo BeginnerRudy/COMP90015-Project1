@@ -17,17 +17,19 @@ public class DictionaryClient {
     public void doSomething() {
         try {
             // connect to the server
-            Socket socket = new Socket(this.address, this.port);
-            // get reply
-            InputStream reply = socket.getInputStream();
-            DataInputStream dis = new DataInputStream(reply);
-            String reply_msg = dis.readUTF();
-            // show it
-            System.out.println(reply_msg);
-            // Close connect
-            dis.close();
-            reply.close();
-            socket.close();
+            while (true) {
+                Socket socket = new Socket(this.address, this.port);
+                // get reply
+                InputStream reply = socket.getInputStream();
+                DataInputStream dis = new DataInputStream(reply);
+                String reply_msg = dis.readUTF();
+                // show it
+                System.out.println(reply_msg);
+                // Close connect
+                dis.close();
+                reply.close();
+                socket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +37,8 @@ public class DictionaryClient {
 
     public static void main(String[] args){
         DictionaryClient client = new DictionaryClient("localhost", 5000);
+        ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
+        clientGUI.setVisible(true);
         client.doSomething();
     }
 }
