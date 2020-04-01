@@ -64,6 +64,23 @@ public class DictionaryClient {
 
     }
 
+    public String delete(String word) {
+        try {
+            this.connectToServer();
+            // send request to the server
+            this.dos.writeUTF(DELETE_METHOD + word);
+            String reply = this.dis.readUTF();
+            System.out.println(reply);
+            this.tearDown();
+            return reply;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to delete a word from the server");
+            return "Failed to delete a word from the server";
+        }
+
+    }
+
     public void doSomething(String request) {
         try {
             // connect to the server

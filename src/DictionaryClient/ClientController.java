@@ -19,4 +19,9 @@ public class ClientController {
         String reply = this.dictionaryClient.add(word, meaning);
         clientGUI.getServerResponse().setText(reply);
     }
+
+    public void delete(String word) {
+        String reply = this.dictionaryClient.delete(word);
+        clientGUI.getServerResponse().setText(reply);
+    }
 }

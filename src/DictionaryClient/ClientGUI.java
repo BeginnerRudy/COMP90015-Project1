@@ -54,7 +54,7 @@ public class ClientGUI extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // testing just up-casing all letters
+                clientController.delete(clientInputTextArea.getText());
             }
         });
     }
