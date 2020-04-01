@@ -4,6 +4,11 @@ import java.io.*;
 import java.net.*;
 
 public class DictionaryClient {
+    public static final String SEPARATOR = "$#";
+    public static final String ADD_METHOD = "A";
+    public static final String DELETE_METHOD = "D";
+    public static final String SEARCH_METHOD = "S";
+
     int port;
     String address;
     Socket socket;
@@ -42,19 +47,19 @@ public class DictionaryClient {
         }
     }
 
-    public String add(String request) {
+    public String add(String word, String meaning) {
         try {
             this.connectToServer();
             // send request to the server
-            this.dos.writeUTF("A" + request);
+            this.dos.writeUTF(ADD_METHOD + word + this.SEPARATOR + meaning);
             String reply = this.dis.readUTF();
             System.out.println(reply);
             this.tearDown();
             return reply;
         } catch (IOException e) {
             e.printStackTrace();
-//            System.out.println("Failed to add a word to the server");
-            return "da";
+            System.out.println("Failed to add a word to the server");
+            return "Failed to add a word to the server";
         }
 
     }

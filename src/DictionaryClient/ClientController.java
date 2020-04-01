@@ -15,8 +15,8 @@ public class ClientController {
         this.clientGUI = clientGUI;
     }
 
-    public void add(String request) {
-        String reply = this.dictionaryClient.add(request);
-        clientGUI.getClientOutputTextArea().setText(reply);
+    public void add(String word, String meaning) {
+        String reply = this.dictionaryClient.add(word, meaning);
+        clientGUI.getServerResponse().setText(reply);
     }
 }
