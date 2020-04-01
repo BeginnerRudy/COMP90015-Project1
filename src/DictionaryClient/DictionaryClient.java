@@ -15,7 +15,6 @@ public class DictionaryClient {
     public DictionaryClient(String address, int port) {
         this.address = address;
         this.port = port;
-        this.connectToServer();
     }
 
     public void connectToServer() {
@@ -45,12 +44,12 @@ public class DictionaryClient {
 
     public String add(String request) {
         try {
+            this.connectToServer();
             // send request to the server
-
             this.dos.writeUTF("The user add a word.");
             String reply = this.dis.readUTF();
             System.out.println(reply);
-//            this.tearDown();
+            this.tearDown();
             return reply;
         } catch (IOException e) {
             e.printStackTrace();

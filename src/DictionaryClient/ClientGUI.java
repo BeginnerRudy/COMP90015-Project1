@@ -17,10 +17,12 @@ public class ClientGUI extends JFrame {
 
     private JLabel statusConnectivityLabel;
     private ClientController clientController;
+
     public ClientGUI(String appName, ClientController clientController) {
         super(appName);
         this.clientController = clientController;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.$$$setupUI$$$();
         this.setContentPane(mainPanel);
         this.pack();
 
@@ -90,4 +92,5 @@ public class ClientGUI extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
