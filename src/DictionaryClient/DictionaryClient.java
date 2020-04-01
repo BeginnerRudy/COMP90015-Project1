@@ -46,7 +46,7 @@ public class DictionaryClient {
         try {
             this.connectToServer();
             // send request to the server
-            this.dos.writeUTF("The user add a word.");
+            this.dos.writeUTF("A" + request);
             String reply = this.dis.readUTF();
             System.out.println(reply);
             this.tearDown();

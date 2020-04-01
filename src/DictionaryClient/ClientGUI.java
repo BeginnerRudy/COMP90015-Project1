@@ -31,8 +31,7 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // testing just up-casing all letters
-                clientOutputTextArea.setText(clientOutputTextArea.getText().toUpperCase());
-                clientController.add("");
+                clientController.add(clientInputTextArea.getText());
             }
         });
 
