@@ -70,44 +70,48 @@ public class DictionaryClient {
     }
 
     public String delete(String word) {
+        if (word.strip() != "") {
+            try {
+                this.connectToServer();
+                // send request to the server
+                this.dos.writeUTF(DELETE_METHOD + word);
+                String reply = this.dis.readUTF();
+                System.out.println(reply);
+                this.tearDown();
+                return reply;
+            } catch (UnknownHostException e) {
+                System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
+                return e.getMessage() + " is unknown.";
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to delete a word from the server");
+                return "Failed to delete a word from the server";
+            }
 
-        try {
-            this.connectToServer();
-            // send request to the server
-            this.dos.writeUTF(DELETE_METHOD + word);
-            String reply = this.dis.readUTF();
-            System.out.println(reply);
-            this.tearDown();
-            return reply;
-        } catch (UnknownHostException e) {
-            System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            return e.getMessage() + " is unknown.";
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to delete a word from the server");
-            return "Failed to delete a word from the server";
         }
-
+        return "Please enter non-empty word.";
     }
 
     public String search(String word) {
-        try {
-            this.connectToServer();
-            // send request to the server
-            this.dos.writeUTF(SEARCH_METHOD + word);
-            String reply = this.dis.readUTF();
-            System.out.println(reply);
-            this.tearDown();
-            return reply;
-        } catch (UnknownHostException e) {
-            System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            return e.getMessage() + " is unknown.";
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to search a word from the server");
-            return "Failed to search a word from the server";
+        if (word.strip() != "") {
+            try {
+                this.connectToServer();
+                // send request to the server
+                this.dos.writeUTF(SEARCH_METHOD + word);
+                String reply = this.dis.readUTF();
+                System.out.println(reply);
+                this.tearDown();
+                return reply;
+            } catch (UnknownHostException e) {
+                System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
+                return e.getMessage() + " is unknown.";
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to search a word from the server");
+                return "Failed to search a word from the server";
+            }
         }
-
+        return "Please enter non-empty word.";
 
     }
 
