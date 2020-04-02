@@ -44,7 +44,7 @@ public class Dictionary {
         try (FileWriter file = new FileWriter(dictionaryFilePath)){
             file.write(((JSONObject) this.getHashmap()).toJSONString());
             file.flush();
-
+            DictionaryServer.printServerMsg("Dictionary saved to the disk.");
         } catch (IOException e) {
             e.printStackTrace();
             DictionaryServer.printServerMsg("Dictionary Saving Failed: I/O Exception." );

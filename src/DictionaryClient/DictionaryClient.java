@@ -22,7 +22,7 @@ public class DictionaryClient {
         this.port = port;
     }
 
-    public void connectToServer() throws UnknownHostException, IOException {
+    public void connectToServer() throws IOException {
         this.socket = new Socket(this.address, this.port);
         this.outputStream = socket.getOutputStream();
         this.dos = new DataOutputStream(this.outputStream);
@@ -59,6 +59,9 @@ public class DictionaryClient {
             } catch (UnknownHostException e) {
                 System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
                 return e.getMessage() + " is unknown.";
+            } catch (ConnectException e) {
+                System.out.println("Failed to connect to the server: " + e.getMessage());
+                return "Failed to connect to the server: " + e.getMessage();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to add a word to the server");
@@ -82,6 +85,9 @@ public class DictionaryClient {
             } catch (UnknownHostException e) {
                 System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
                 return e.getMessage() + " is unknown.";
+            } catch (ConnectException e) {
+                System.out.println("Failed to connect to the server: " + e.getMessage());
+                return "Failed to connect to the server: " + e.getMessage();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to delete a word from the server");
@@ -105,10 +111,13 @@ public class DictionaryClient {
             } catch (UnknownHostException e) {
                 System.out.println("Failed to connect to the server: " + e.getMessage() + " is unknown.");
                 return e.getMessage() + " is unknown.";
+            } catch (ConnectException e) {
+                System.out.println("Failed to connect to the server: " + e.getMessage());
+                return "Failed to connect to the server: " + e.getMessage();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to search a word from the server");
-                return "Failed to search a word from the server";
+                return "Failed to search a word from the server, I/O Exception";
             }
         }
         return "Please enter non-empty word.";
