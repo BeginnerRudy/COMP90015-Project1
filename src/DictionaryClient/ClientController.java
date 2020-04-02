@@ -24,4 +24,9 @@ public class ClientController {
         String reply = this.dictionaryClient.delete(word);
         clientGUI.getServerResponse().setText(reply);
     }
+
+    public void search(String word) {
+        String reply = this.dictionaryClient.search(word);
+        clientGUI.getClientOutputTextArea().setText(reply);
+    }
 }

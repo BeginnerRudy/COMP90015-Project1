@@ -81,22 +81,23 @@ public class DictionaryClient {
 
     }
 
-    public void doSomething(String request) {
+    public String search(String word) {
         try {
-            // connect to the server
-            while (true) {
-                // show it
-                dos.writeUTF("The user add a word");
-
-                System.out.println("Add Button Clicked");
-                // get reply
-                String reply_msg = dis.readUTF();
-                System.out.println(reply_msg);
-            }
+            this.connectToServer();
+            // send request to the server
+            this.dos.writeUTF(SEARCH_METHOD + word);
+            String reply = this.dis.readUTF();
+            System.out.println(reply);
+            this.tearDown();
+            return reply;
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to search a word from the server");
+            return "Failed to search a word from the server";
         }
+
     }
+
 
     public static void main(String[] args) {
         DictionaryClient client = new DictionaryClient("localhost", 5000);

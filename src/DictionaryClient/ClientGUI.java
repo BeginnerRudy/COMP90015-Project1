@@ -63,7 +63,7 @@ public class ClientGUI extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // testing just up-casing all letters
+                clientController.search(clientInputTextArea.getText());
             }
         });
     }
