@@ -26,11 +26,26 @@ public class AddService extends Service {
     public synchronized void run() {
         try {
             parse(body);
-            super.dos.writeUTF("Successfully add: " + word + " - " + meaning);
-            Dictionary.getDictionary().getHashmap().put(word, meaning);
-            System.out.println(Dictionary.getDictionary().getHashmap());
-            System.out.println("Successfully add: " + word + " - " + meaning);
+
+            // if the word is duplicate
+            if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
+                super.dos.writeUTF("Failed to add, because the word is already in dictionary. ");
+                System.out.println("Failed to add, because the word is already in dictionary. ");
+            }
+            // if the meaning is null
+            else if (this.meaning == null) {
+                super.dos.writeUTF("Fail to add, because the meaning is empty");
+                System.out.println("Fail to add, because the meaning is empty");
+            // if the word is not duplicate and the meaning is not null.
+            } else {
+
+                super.dos.writeUTF("Successfully add: " + word + " - " + meaning);
+                Dictionary.getDictionary().getHashmap().put(word, meaning);
+                System.out.println(Dictionary.getDictionary().getHashmap());
+                System.out.println("Successfully add: " + word + " - " + meaning);
+            }
             super.closeOutput();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
