@@ -31,4 +31,11 @@ public class PoolThread extends Thread {
         this.isStop = true;
         this.interrupt();
     }
+<<<<<<< HEAD
+=======
+
+    public boolean isStop() {
+        return isStop;
+    }
+>>>>>>> 347181ebb546ba2b29f8b13e15a1e2b8f73299e7
 }
