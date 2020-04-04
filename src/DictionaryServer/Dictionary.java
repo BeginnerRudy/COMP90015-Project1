@@ -20,6 +20,7 @@ public class Dictionary {
         JSONParser parser = new JSONParser();
         try (Reader reader = new FileReader(dictionaryFilePath)) {
             this.hashmap = (JSONObject) parser.parse(reader);
+            DictionaryServer.printServerMsg("Dictionary Loading Successfully! \n" + this.hashmap.toString());
         } catch (IOException e) {
             this.hashmap = new HashMap<>();
             DictionaryServer.printServerMsg("Dictionary Loading Failed: " + e.getMessage() + "\n Initialized with empty dictionary.");
@@ -41,13 +42,13 @@ public class Dictionary {
 
     public void saveToDisk(String dictionaryFilePath) {
         //Write JSON file
-        try (FileWriter file = new FileWriter(dictionaryFilePath)){
+        try (FileWriter file = new FileWriter(dictionaryFilePath)) {
             file.write(((JSONObject) this.getHashmap()).toJSONString());
             file.flush();
             DictionaryServer.printServerMsg("Dictionary saved to the disk.");
         } catch (IOException e) {
             e.printStackTrace();
-            DictionaryServer.printServerMsg("Dictionary Saving Failed: I/O Exception." );
+            DictionaryServer.printServerMsg("Dictionary Saving Failed: I/O Exception.");
         } catch (NullPointerException e) {
             e.printStackTrace();
             DictionaryServer.printServerMsg("Dictionary Saving Failed: The file path is not valid.");

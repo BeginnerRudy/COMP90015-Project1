@@ -1,6 +1,4 @@
-package DictionaryServer;
-
-import DictionaryServer.Services.*;
+package DictionaryServer.Services;
 
 import java.io.DataInputStream;
 import java.io.IOException;
