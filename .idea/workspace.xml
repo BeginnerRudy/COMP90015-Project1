@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Multithreaded Dictionary Server:jar2" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DictionaryClient/Test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Multithreaded Dictionary Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Multithreaded Dictionary Server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,8 +34,11 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="151" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$/src/DictionaryServer/data" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/json-simple-1.1.1.jar!/" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -37,9 +46,15 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propGUI" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="DictionaryClient" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -53,9 +68,35 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DictionaryClient">
+  <component name="RunManager" selected="Application.DictionaryClient2">
+    <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
+      <module name="Multithreaded Dictionary Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DictionaryClient.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="DictionaryClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.DictionaryClient" />
+      <module name="Multithreaded Dictionary Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DictionaryClient.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DictionaryClient2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DictionaryClient.DictionaryClient2" />
       <module name="Multithreaded Dictionary Server" />
       <extension name="coverage">
         <pattern>
@@ -70,23 +111,10 @@
     <configuration name="DictionaryServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryServer.DictionaryServer" />
       <module name="Multithreaded Dictionary Server" />
-      <option name="PROGRAM_PARAMETERS" value="5000" />
+      <option name="PROGRAM_PARAMETERS" value="5000 &quot;./src/DictionaryServer/data/dictionary.json&quot;" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="DictionaryServer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="DictionaryClient.Test" />
-      <module name="Multithreaded Dictionary Server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="DictionaryClient.*" />
+          <option name="PATTERN" value="DictionaryServer.Services.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -96,14 +124,16 @@
     </configuration>
     <list>
       <item itemvalue="Application.DictionaryServer" />
-      <item itemvalue="Application.Test" />
+      <item itemvalue="Application.ClientGUI" />
       <item itemvalue="Application.DictionaryClient" />
+      <item itemvalue="Application.DictionaryClient2" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.DictionaryServer" />
-        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.DictionaryClient2" />
+        <item itemvalue="Application.DictionaryClient" />
+        <item itemvalue="Application.ClientGUI" />
       </list>
     </recent_temporary>
   </component>
@@ -118,7 +148,15 @@
       <option name="presentableId" value="Default" />
       <updated>1585107829826</updated>
       <workItem from="1585107833093" duration="2962000" />
-      <workItem from="1585454806123" duration="1708000" />
+      <workItem from="1585454806123" duration="5711000" />
+      <workItem from="1585463561019" duration="314000" />
+      <workItem from="1585468704468" duration="737000" />
+      <workItem from="1585475479037" duration="1550000" />
+      <workItem from="1585610029203" duration="26980000" />
+      <workItem from="1585691957070" duration="18549000" />
+      <workItem from="1585776330293" duration="22124000" />
+      <workItem from="1585818406127" duration="1737000" />
+      <workItem from="1585966228208" duration="6091000" />
     </task>
     <servers />
   </component>
