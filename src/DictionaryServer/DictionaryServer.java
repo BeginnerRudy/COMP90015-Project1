@@ -1,22 +1,26 @@
 package DictionaryServer;
 
 import DictionaryServer.Services.Service;
-import com.sun.source.tree.WhileLoopTree;
+import DictionaryServer.Services.ServiceFactory;
+import DictionaryServer.ThreadPool.ThreadPool;
 
 import java.io.*;
 import java.net.*;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class DictionaryServer {
     int port;
     String dictionaryFilePath;
     ServerSocket serverSocket;
+    ThreadPool threadPool;
+    ServiceFactory serviceFactory;
+
     public static final int MAX_T = 1;
 
     public DictionaryServer(int port, String dictionaryFilePath) {
         this.port = port;
+        this.threadPool = new ThreadPool(this.MAX_T);
+        this.serviceFactory = ServiceFactory.getServiceFactory();
+
         // Initialize the dictionary by read file from disk
         this.dictionaryFilePath = dictionaryFilePath;
         Dictionary.getDictionary().init(this.dictionaryFilePath);
@@ -25,6 +29,9 @@ public class DictionaryServer {
     public void shutDown() {
         // Save the dictionary to disk before shutting down
         Dictionary.getDictionary().saveToDisk(this.dictionaryFilePath);
+
+        // Interrupt all threads
+        this.threadPool.stop();
 
         try {
             // Close the server socket -> TODO Tell currently connected user, the server is down.
@@ -36,16 +43,12 @@ public class DictionaryServer {
     }
 
     public void execute() {
-
         try {
             serverSocket = new ServerSocket(this.port);
-            ExecutorService pool = Executors.newFixedThreadPool(MAX_T);
-            ServiceFactory serviceFactory = ServiceFactory.getServiceFactory();
-
             while (true) {
                 Socket socket = serverSocket.accept();
                 Service service = serviceFactory.getService(socket);
-                pool.execute(service);
+                threadPool.execute(service);
             }
         } catch (SocketException e) {
             printServerMsg("Server socket is closed, the server is closed.");
