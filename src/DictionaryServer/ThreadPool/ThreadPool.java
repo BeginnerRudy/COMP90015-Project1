@@ -30,15 +30,8 @@ public class ThreadPool {
 
     public void execute(Runnable task) {
         try {
-<<<<<<< HEAD
             if (this.isStop) throw new IllegalStateException("Thread pool is terminated!");
             this.taskQueue.put(task);
-
-=======
-            if (!this.isStop) {
-                this.taskQueue.put(task);
-            }
->>>>>>> 347181ebb546ba2b29f8b13e15a1e2b8f73299e7
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

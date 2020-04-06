@@ -21,8 +21,7 @@ public class PoolThread extends Thread {
                 DictionaryServer.printServerMsg("Thread processing new task!");
                 task.run();
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                // TODO handle the queue has been interrupted.
+                DictionaryServer.printServerMsg("The thread in thread pool is interrupted due to server is closed.");
             }
         }
     }
@@ -31,11 +30,4 @@ public class PoolThread extends Thread {
         this.isStop = true;
         this.interrupt();
     }
-<<<<<<< HEAD
-=======
-
-    public boolean isStop() {
-        return isStop;
-    }
->>>>>>> 347181ebb546ba2b29f8b13e15a1e2b8f73299e7
 }

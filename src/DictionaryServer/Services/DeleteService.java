@@ -18,13 +18,13 @@ public class DeleteService extends Service {
             // if the word is not found
             this.word = body;
             if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
-                super.dos.writeUTF("Successfully delete: " + word);
+                super.dos.writeUTF(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
                 Dictionary.getDictionary().getHashmap().remove(body);
                 System.out.println(Dictionary.getDictionary().getHashmap());
-                System.out.println("Successfully delete: " + word);
+                System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
             } else {
-                super.dos.writeUTF("Delete failed, because no such word in the dictionary");
-                System.out.println("Delete failed, because no such word in the dictionary");
+                super.dos.writeUTF(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
+                System.out.println(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
             }
 
             super.closeOutput();

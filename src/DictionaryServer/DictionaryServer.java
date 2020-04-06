@@ -14,7 +14,7 @@ public class DictionaryServer {
     ThreadPool threadPool;
     ServiceFactory serviceFactory;
 
-    public static final int MAX_T = 1;
+    public static final int MAX_T = 10;
 
     public DictionaryServer(int port, String dictionaryFilePath) {
         this.port = port;

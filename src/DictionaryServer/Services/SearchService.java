@@ -20,11 +20,11 @@ public class SearchService extends Service {
             this.word = body;
             String meaning = Dictionary.getDictionary().getHashmap().get(word);
             if (meaning != null){
-                super.dos.writeUTF(meaning);
-                System.out.println("Successfully searched");
+                super.dos.writeUTF(ServiceFactory.SUCCESS_CODE + meaning);
+                System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully searched");
             }else{
-                super.dos.writeUTF("The word not found.");
-                System.out.println("Word not found");
+                super.dos.writeUTF(ServiceFactory.FAILURE_CODE + "The word not found.");
+                System.out.println(ServiceFactory.FAILURE_CODE + "Word not found");
 
             }
             super.closeOutput();
