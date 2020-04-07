@@ -1,8 +1,10 @@
 package DictionaryServer.Services;
 
+import org.json.simple.JSONObject;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -11,11 +13,10 @@ import java.net.Socket;
  */
 public abstract class Service implements Runnable {
     Socket socket; // The socket to do I/O
-    OutputStream outputStream;
-    DataOutputStream dos;
-    String body;
+    ObjectOutputStream writer;
+    JSONObject body;
 
-    public Service(Socket socket, String body) {
+    public Service(Socket socket, JSONObject body) {
         this.socket = socket;
         this.getOutput();
         this.body = body;
@@ -27,8 +28,7 @@ public abstract class Service implements Runnable {
      */
     private void getOutput() {
         try {
-            this.outputStream = this.socket.getOutputStream();
-            this.dos = new DataOutputStream(this.outputStream);
+            this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,8 +39,7 @@ public abstract class Service implements Runnable {
      */
     protected void closeOutput() {
         try {
-            this.outputStream.close();
-            this.dos.close();
+            this.writer.close();
             this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();

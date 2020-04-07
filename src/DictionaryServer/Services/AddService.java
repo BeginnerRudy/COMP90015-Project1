@@ -1,6 +1,7 @@
 package DictionaryServer.Services;
 
 import DictionaryServer.Dictionary;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,21 +15,20 @@ public class AddService extends Service {
     String meaning;
 
 
-    public AddService(Socket socket, String body) {
+    public AddService(Socket socket, JSONObject body) {
         super(socket, body);
     }
 
 
     /**
      * @param body The request body sent by the client.
-     *
-     * This method aims to separate the word and meaning in the body.
+     *             <p>
+     *             This method aims to separate the word and meaning in the body.
      */
-    private void parse(String body) {
-        String lis[] = body.split(ServiceFactory.SEPARATOR);
+    private void parse(JSONObject body) {
 
-        this.word = lis[0];
-        this.meaning = lis[1];
+        this.word = (String) body.get(ServiceFactory.WORD_KEY);
+        this.meaning = (String) body.get(ServiceFactory.MEANING_KEY);
     }
 
     /**
@@ -39,20 +39,32 @@ public class AddService extends Service {
         try {
             parse(body);
 
+            JSONObject reply = new JSONObject();
+
             // if the word is duplicate
             if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
-                super.dos.writeUTF(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
+                // construct reply JSON object
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "Failed to add, because the word is already in dictionary. ");
+
+                // send reply to client
+                super.writer.writeUTF(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
                 System.out.println(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
             }
             // if the meaning is null
             else if (this.meaning == null) {
-                super.dos.writeUTF(ServiceFactory.FAILURE_CODE + "Fail to add, because the meaning is empty");
+                // construct reply JSON object
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "Fail to add, because the meaning is empty");
+                super.writer.writeObject(reply);
                 System.out.println(ServiceFactory.FAILURE_CODE + "Fail to add, because the meaning is empty");
                 // if the word is not duplicate and the meaning is not null.
             } else {
-
-                super.dos.writeUTF(ServiceFactory.SUCCESS_CODE + "Successfully add: " + word + " - " + meaning);
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                String response_msg = "Successfully add: " + word + " - " + meaning;
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, response_msg);
                 Dictionary.getDictionary().getHashmap().put(word, meaning);
+                super.writer.writeObject(reply);
                 System.out.println(Dictionary.getDictionary().getHashmap());
                 System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully add: " + word + " - " + meaning);
             }

@@ -48,16 +48,7 @@ public class ClientGUI extends JFrame {
                 String word = clientInputTextFiled.getText();
                 String meaning = clientOutputTextArea.getText();
 
-                serverResponse.setText(WORKING);
-                // check if the user input is valid, that is should not contain any preserved keyword.
-                if (word.contains(DictionaryClient.SEPARATOR) || meaning.contains(DictionaryClient.SEPARATOR)) {
-
-                    serverResponse.setForeground(new Color(255, 0, 0));
-                    serverResponse.setText("The input should not contain preserved keyword, that is \""
-                            + DictionaryClient.SEPARATOR + "\"");
-                } else {
-                    clientController.add(word, meaning);
-                }
+                clientController.add(word, meaning);
 
             }
         });
@@ -72,15 +63,7 @@ public class ClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 serverResponse.setText(WORKING);
                 String word = clientInputTextFiled.getText();
-                // check if the user input is valid, that is should not contain any preserved keyword.
-                if (word.contains(DictionaryClient.SEPARATOR)) {
-
-                    serverResponse.setForeground(new Color(255, 0, 0));
-                    serverResponse.setText("The input should not contain preserved keyword, that is \""
-                            + DictionaryClient.SEPARATOR + "\"");
-                } else {
-                    clientController.delete(word);
-                }
+                clientController.delete(word);
             }
         });
     }

@@ -1,6 +1,7 @@
 package DictionaryServer.Services;
 
 import DictionaryServer.Dictionary;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -12,7 +13,7 @@ import java.net.Socket;
 public class DeleteService extends Service {
     String word;
 
-    public DeleteService(Socket socket, String body) {
+    public DeleteService(Socket socket, JSONObject body) {
         super(socket, body);
     }
 
@@ -22,16 +23,16 @@ public class DeleteService extends Service {
      */
     public synchronized void run() {
         try {
-            this.word = body;
+//            this.word = body;
             // The word is in the dictionary, then delete it
             if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
-                super.dos.writeUTF(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
+                super.writer.writeUTF(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
                 Dictionary.getDictionary().getHashmap().remove(body);
                 System.out.println(Dictionary.getDictionary().getHashmap());
                 System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
                 // if the word is not found
             } else {
-                super.dos.writeUTF(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
+                super.writer.writeUTF(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
                 System.out.println(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
             }
 

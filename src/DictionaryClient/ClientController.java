@@ -1,8 +1,10 @@
 package DictionaryClient;
 
 import DictionaryClient.DictionaryClient;
+import org.json.simple.JSONObject;
 
 import java.awt.*;
+
 
 /**
  * This class is the client side controller, which is responsible for sending UI message
@@ -29,8 +31,23 @@ public class ClientController {
      * This method is responsible for handing the add button message from the GUI
      */
     public void add(String word, String meaning) {
-        String reply = this.dictionaryClient.add(word, meaning);
-        updateViewForAddAndDelete(reply);
+        JSONObject reply = this.dictionaryClient.add(word, meaning);
+        // parse the reply message
+        String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
+
+        // duplex the message depends on the response code,
+        // message with different response code would have different text color.
+        if (responseCode.equals(DictionaryClient.SUCCESS_CODE)) {
+            String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
+            clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
+            clientGUI.getServerResponse().setText(message);
+            System.out.println(message);
+
+        } else if (responseCode.equals(DictionaryClient.FAILURE_CODE)) {
+            String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
+            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+            clientGUI.getServerResponse().setText(message);
+        }
 
     }
 

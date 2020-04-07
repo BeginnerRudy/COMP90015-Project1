@@ -88,6 +88,7 @@ public class DictionaryServer {
         // get the args
         int port = Integer.parseInt(args[1]);
         String dictionaryFilePath = args[2];
+        System.out.println("The port is" + port);
 
         // create a server
         DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);

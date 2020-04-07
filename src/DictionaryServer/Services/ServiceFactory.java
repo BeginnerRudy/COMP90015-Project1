@@ -1,8 +1,8 @@
 package DictionaryServer.Services;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.json.simple.JSONObject;
+
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -11,15 +11,17 @@ import java.net.Socket;
  * pattern.
  */
 public class ServiceFactory {
-    // separator is used to separate word and meaning.
-    public static final String SEPARATOR = "\\$#";
-
     // The method and response code are discussed in the report.
     public static final String ADD_METHOD = "A";
     public static final String DELETE_METHOD = "D";
     public static final String SEARCH_METHOD = "S";
     public static final String SUCCESS_CODE = "1";
     public static final String FAILURE_CODE = "0";
+    public static final String REQUEST_HEADER = "request_method";
+    public static final String WORD_KEY = "word";
+    public static final String MEANING_KEY = "meaning";
+    public static final String RESPONSE_CODE_KEY = "response_code";
+    public static final String RESPONSE_MESSAGE_KEY = "response_message";
 
     private static ServiceFactory serviceFactory = new ServiceFactory();
 
@@ -37,19 +39,22 @@ public class ServiceFactory {
      * @return The correct service, the client ask for.
      */
     public Service getService(Socket socket) {
-        String request = null;
+        JSONObject request = null;
         try {
             // read request from the socket
-            InputStream inputStream = socket.getInputStream();
-            DataInputStream dis = new DataInputStream(inputStream);
-            request = dis.readUTF();
+            ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
+            request = (JSONObject) reader.readObject();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
 
         // parse the request into request method and request body
-        String requestMethod = request.substring(0, 1);
-        String body = request.substring(1);
+        String requestMethod = (String) request.get(REQUEST_HEADER);
+        request.remove(REQUEST_HEADER);
+        JSONObject body = request;
 
         // create and return service depends on the method.
         switch (requestMethod) {
