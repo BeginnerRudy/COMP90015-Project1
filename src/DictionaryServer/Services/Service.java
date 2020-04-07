@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -16,23 +17,12 @@ public abstract class Service implements Runnable {
     ObjectOutputStream writer;
     JSONObject body;
 
-    public Service(Socket socket, JSONObject body) {
+    public Service(Socket socket, JSONObject body, ObjectOutputStream writer) {
         this.socket = socket;
-        this.getOutput();
+        this.writer = writer;
         this.body = body;
     }
 
-
-    /**
-     * This private method aims to read from the socket given.
-     */
-    private void getOutput() {
-        try {
-            this.writer = new ObjectOutputStream(this.socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * This method aims to close the all the I/O stuffs safely.

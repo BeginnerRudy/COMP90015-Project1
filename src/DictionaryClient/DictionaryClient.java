@@ -41,7 +41,6 @@ public class DictionaryClient {
         this.socket = new Socket(this.address, this.port);
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
-        System.out.println("asdasdasd++++++++++++++++++++++++");
     }
 
     /**
@@ -77,7 +76,6 @@ public class DictionaryClient {
 
                 // send request to the server
                 this.writer.writeObject(add_request);
-                this.reader = new ObjectInputStream(this.socket.getInputStream());
                 JSONObject reply = (JSONObject) this.reader.readObject();
                 this.tearDown();
                 return reply;
@@ -90,19 +88,22 @@ public class DictionaryClient {
                 reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
                 e.printStackTrace();
                 return reply;
-            } catch (ConnectException e) {                // construct the failure reply
+            } catch (ConnectException e) {
+                // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
                 e.printStackTrace();
                 return reply;
-            } catch (IOException e) {                // construct the failure reply
+            } catch (IOException e) {
+                // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to add a word to the server");
                 e.printStackTrace();
                 return reply;
-            } catch (ClassNotFoundException e) {                // construct the failure reply
+            } catch (ClassNotFoundException e) {
+                // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
@@ -127,31 +128,56 @@ public class DictionaryClient {
      * <p>
      * This method handles the delete function both the success and failure cases.
      */
-    public String delete(String word) {
+    public JSONObject delete(String word) {
         if (word.strip() != "") {
             try {
                 this.connectToServer();
+                JSONObject delete_request = new JSONObject();
+                // construct the add request
+                delete_request.put(REQUEST_HEADER, DELETE_METHOD);
+                delete_request.put(WORD_KEY, word);
                 // send request to the server
-                this.writer.writeUTF(DELETE_METHOD + word);
-                String reply = this.reader.readUTF();
-                System.out.println(reply);
+                this.writer.writeObject(delete_request);
+                JSONObject reply = (JSONObject) this.reader.readObject();
                 this.tearDown();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
                 System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-                return FAILURE_CODE + e.getMessage() + " is unknown.";
-            } catch (ConnectException e) {
-                System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage());
-                return FAILURE_CODE + "Failed to connect to the server: " + e.getMessage();
-            } catch (IOException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
                 e.printStackTrace();
-                System.out.println(FAILURE_CODE + "Failed to delete a word from the server");
-                return FAILURE_CODE + "Failed to delete a word from the server";
-            }
+                return reply;
+            } catch (ConnectException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
+                e.printStackTrace();
+                return reply;
+            } catch (IOException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to delete a word from the server, due to client IO side exception");
+                return reply;
+            } catch (ClassNotFoundException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
+                e.printStackTrace();
+                return reply;
 
+            }
         }
-        return FAILURE_CODE + "Please enter non-empty word.";
+        // construct the failure reply
+        JSONObject reply = new JSONObject();
+        reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+        reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
+        return reply;
     }
 
     /**
@@ -160,30 +186,55 @@ public class DictionaryClient {
      * <p>
      * This method handles the search function both the success and failure cases.
      */
-    public String search(String word) {
+    public JSONObject search(String word) {
         if (word.strip() != "") {
             try {
                 this.connectToServer();
+                JSONObject search_request = new JSONObject();
+                // construct the add request
+                search_request.put(REQUEST_HEADER, SEARCH_METHOD);
+                search_request.put(WORD_KEY, word);
+
                 // send request to the server
-                this.writer.writeUTF(SEARCH_METHOD + word);
-                String reply = this.reader.readUTF();
-                System.out.println(reply);
+                this.writer.writeObject(search_request);
+                JSONObject reply = (JSONObject) this.reader.readObject();
                 this.tearDown();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
-                System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-                return FAILURE_CODE + e.getMessage() + " is unknown.";
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage() + " is unknown.");
+                return reply;
             } catch (ConnectException e) {
-                System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage());
-                return FAILURE_CODE + "Failed to connect to the server: " + e.getMessage();
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
+                return reply;
             } catch (IOException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to search a word from the server due to client side IO exception");
                 e.printStackTrace();
-                System.out.println(FAILURE_CODE + "Failed to search a word from the server");
-                return FAILURE_CODE + "Failed to search a word from the server, I/O Exception";
+                return reply;
+            } catch (ClassNotFoundException e) {
+                // construct the failure reply
+                JSONObject reply = new JSONObject();
+                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+                reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
+                e.printStackTrace();
+                return reply;
+
             }
         }
-        return FAILURE_CODE + "Please enter non-empty word.";
+        // construct the failure reply
+        JSONObject reply = new JSONObject();
+        reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
+        reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
+        return reply;
 
     }
 

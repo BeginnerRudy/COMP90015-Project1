@@ -4,6 +4,7 @@ import DictionaryServer.Dictionary;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -13,8 +14,8 @@ import java.net.Socket;
 public class DeleteService extends Service {
     String word;
 
-    public DeleteService(Socket socket, JSONObject body) {
-        super(socket, body);
+    public DeleteService(Socket socket, JSONObject body, ObjectOutputStream writer) {
+        super(socket, body, writer);
     }
 
     @Override
@@ -23,20 +24,30 @@ public class DeleteService extends Service {
      */
     public synchronized void run() {
         try {
-//            this.word = body;
+            this.word = (String) body.get(ServiceFactory.WORD_KEY);
+
             // The word is in the dictionary, then delete it
             if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
-                super.writer.writeUTF(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
-                Dictionary.getDictionary().getHashmap().remove(body);
+                // construct object
+                JSONObject reply = new JSONObject();
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                String message = "Successfully delete: " + word;
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, message);
+                super.writer.writeObject(reply);
+                Dictionary.getDictionary().getHashmap().remove(this.word);
                 System.out.println(Dictionary.getDictionary().getHashmap());
                 System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
                 // if the word is not found
             } else {
-                super.writer.writeUTF(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
+                // construct object
+                JSONObject reply = new JSONObject();
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "Delete failed, because no such word in the dictionary");
+
+                super.writer.writeObject(reply);
                 System.out.println(ServiceFactory.FAILURE_CODE + "Delete failed, because no such word in the dictionary");
             }
 
-            super.closeOutput();
         } catch (IOException e) {
             e.printStackTrace();
         }

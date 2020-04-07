@@ -4,6 +4,7 @@ import DictionaryServer.Dictionary;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
@@ -14,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class SearchService extends Service {
     String word;
 
-    public SearchService(Socket socket, JSONObject body) {
-        super(socket, body);
+    public SearchService(Socket socket, JSONObject body, ObjectOutputStream writer) {
+        super(socket, body, writer);
     }
 
     @Override
@@ -24,20 +25,28 @@ public class SearchService extends Service {
      */
     public synchronized void run() {
         try {
+            // TODO delete timer in search service
             TimeUnit.SECONDS.sleep(3);
-//            this.word = body;
+            this.word = (String) body.get(ServiceFactory.WORD_KEY);
             String meaning = Dictionary.getDictionary().getHashmap().get(word);
             // The word is in the dictionary, then delete it
             if (meaning != null){
-                super.writer.writeUTF(ServiceFactory.SUCCESS_CODE + meaning);
+                // construct reply
+                JSONObject reply = new JSONObject();
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                reply.put(ServiceFactory.MEANING_KEY, meaning);
+                super.writer.writeObject(reply);
                 System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully searched");
             }else{
                 // The word is not the dictionary, return fail to search
-                super.writer.writeUTF(ServiceFactory.FAILURE_CODE + "The word not found.");
+                // construct reply
+                JSONObject reply = new JSONObject();
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
+                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "The word not found.");
+                super.writer.writeObject(reply);
                 System.out.println(ServiceFactory.FAILURE_CODE + "Word not found");
 
             }
-            super.closeOutput();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){

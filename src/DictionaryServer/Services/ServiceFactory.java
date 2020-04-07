@@ -40,9 +40,10 @@ public class ServiceFactory {
      */
     public Service getService(Socket socket) {
         JSONObject request = null;
+        ObjectOutputStream writer = null;
         try {
             // read request from the socket
-            ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+            writer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
             request = (JSONObject) reader.readObject();
         } catch (IOException e) {
@@ -59,14 +60,14 @@ public class ServiceFactory {
         // create and return service depends on the method.
         switch (requestMethod) {
             case ADD_METHOD:
-                return new AddService(socket, body);
+                return new AddService(socket, body, writer);
             case DELETE_METHOD:
-                return new DeleteService(socket, body);
+                return new DeleteService(socket, body, writer);
             case SEARCH_METHOD:
-                return new SearchService(socket, body);
+                return new SearchService(socket, body, writer);
             default:
                 // TODO Here should be a undefined method exception
-                return new AddService(socket, body);
+                return new AddService(socket, body, writer);
         }
     }
 

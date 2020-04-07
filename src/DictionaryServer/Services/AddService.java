@@ -4,6 +4,7 @@ import DictionaryServer.Dictionary;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -15,8 +16,8 @@ public class AddService extends Service {
     String meaning;
 
 
-    public AddService(Socket socket, JSONObject body) {
-        super(socket, body);
+    public AddService(Socket socket, JSONObject body, ObjectOutputStream writer) {
+        super(socket, body, writer);
     }
 
 
@@ -68,10 +69,10 @@ public class AddService extends Service {
                 System.out.println(Dictionary.getDictionary().getHashmap());
                 System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully add: " + word + " - " + meaning);
             }
-            super.closeOutput();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        super.closeOutput();
     }
 }
