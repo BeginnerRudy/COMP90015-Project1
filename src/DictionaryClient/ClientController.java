@@ -82,6 +82,8 @@ public class ClientController {
         if (responseCode.equals(DictionaryClient.SUCCESS_CODE)) {
             String meaning = (String) reply.get(DictionaryClient.MEANING_KEY);
             clientGUI.getClientOutputTextArea().setText(meaning);
+            clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
+            clientGUI.getServerResponse().setText("Successfully searched, meaning is as shown above.");
 
         } else if (responseCode.equals(DictionaryClient.FAILURE_CODE)) {
             String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);

@@ -2,6 +2,7 @@ package DictionaryServer;
 
 import DictionaryServer.Services.Service;
 import DictionaryServer.Services.ServiceFactory;
+import DictionaryServer.Services.ServiceNotFoundException;
 import DictionaryServer.ThreadPool.ThreadPool;
 
 import java.io.*;
@@ -65,7 +66,10 @@ public class DictionaryServer {
             }
         } catch (SocketException e) {
             printServerMsg("Server socket is closed, the server is closed.");
-        } catch (Exception e) {
+        } catch (ServiceNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            System.out.println("Server side IO exception");
             e.printStackTrace();
         }
     }

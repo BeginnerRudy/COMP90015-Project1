@@ -38,7 +38,7 @@ public class ServiceFactory {
      * @param socket The messages comes from this socket.
      * @return The correct service, the client ask for.
      */
-    public Service getService(Socket socket) {
+    public Service getService(Socket socket) throws ServiceNotFoundException {
         JSONObject request = null;
         ObjectOutputStream writer = null;
         try {
@@ -48,7 +48,7 @@ public class ServiceFactory {
             request = (JSONObject) reader.readObject();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class ServiceFactory {
                 return new SearchService(socket, body, writer);
             default:
                 // TODO Here should be a undefined method exception
-                return new AddService(socket, body, writer);
+                throw new ServiceNotFoundException("oh no");
         }
     }
 

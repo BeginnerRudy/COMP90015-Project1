@@ -49,7 +49,7 @@ public class AddService extends Service {
                 reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "Failed to add, because the word is already in dictionary. ");
 
                 // send reply to client
-                super.writer.writeUTF(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
+                super.writer.writeObject(reply);
                 System.out.println(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
             }
             // if the meaning is null

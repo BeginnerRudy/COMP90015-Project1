@@ -8,13 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -137,8 +134,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DictionaryServer" />
         <item itemvalue="Application.DictionaryClient" />
+        <item itemvalue="Application.DictionaryServer" />
         <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.ClientGUI" />
       </list>
@@ -169,7 +166,7 @@
       <workItem from="1586154589128" duration="8227000" />
       <workItem from="1586210182185" duration="13074000" />
       <workItem from="1586264635983" duration="1638000" />
-      <workItem from="1586296855494" duration="2735000" />
+      <workItem from="1586296855494" duration="3994000" />
     </task>
     <servers />
   </component>
