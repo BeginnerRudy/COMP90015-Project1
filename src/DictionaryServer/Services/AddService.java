@@ -5,6 +5,10 @@ import DictionaryServer.Dictionary;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * This class extends the service class which is responsible for handling adding a word
+ * to dictionary.
+ */
 public class AddService extends Service {
     String word;
     String meaning;
@@ -14,6 +18,12 @@ public class AddService extends Service {
         super(socket, body);
     }
 
+
+    /**
+     * @param body The request body sent by the client.
+     *
+     * This method aims to separate the word and meaning in the body.
+     */
     private void parse(String body) {
         String lis[] = body.split(ServiceFactory.SEPARATOR);
 
@@ -21,6 +31,9 @@ public class AddService extends Service {
         this.meaning = lis[1];
     }
 
+    /**
+     * This method defines the runnable interface method for adding
+     */
     @Override
     public synchronized void run() {
         try {

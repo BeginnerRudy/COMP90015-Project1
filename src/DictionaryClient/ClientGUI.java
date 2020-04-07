@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is responsible for client side GUI.
+ */
 public class ClientGUI extends JFrame {
     private JPanel mainPanel;
     private JTextField clientInputTextFiled;
@@ -34,6 +37,9 @@ public class ClientGUI extends JFrame {
         setSearchButtonLogic();
     }
 
+    /**
+     * Set the add button logic
+     */
     public void setAddButtonLogic() {
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -43,6 +49,7 @@ public class ClientGUI extends JFrame {
                 String meaning = clientOutputTextArea.getText();
 
                 serverResponse.setText(WORKING);
+                // check if the user input is valid, that is should not contain any preserved keyword.
                 if (word.contains(DictionaryClient.SEPARATOR) || meaning.contains(DictionaryClient.SEPARATOR)) {
 
                     serverResponse.setForeground(new Color(255, 0, 0));
@@ -56,12 +63,16 @@ public class ClientGUI extends JFrame {
         });
     }
 
+    /**
+     * Set the delete button logic
+     */
     public void setDeleteButtonLogic() {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 serverResponse.setText(WORKING);
                 String word = clientInputTextFiled.getText();
+                // check if the user input is valid, that is should not contain any preserved keyword.
                 if (word.contains(DictionaryClient.SEPARATOR)) {
 
                     serverResponse.setForeground(new Color(255, 0, 0));
@@ -74,6 +85,9 @@ public class ClientGUI extends JFrame {
         });
     }
 
+    /**
+     * Set the search button logic
+     */
     public void setSearchButtonLogic() {
         searchButton.addActionListener(new ActionListener() {
             @Override

@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * This class is responsible for the server side GUI
+ */
 public class ServerGUI extends JFrame {
     private JPanel mainPanel;
     private JTextArea textArea1;

@@ -2,24 +2,32 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="Multithreaded Dictionary Server:jar2" />
+      <artifact name="DictionaryClient:jar" />
+      <artifact name="DictionaryServer:jar" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DictionaryClient_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DictionaryServer_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Multithreaded_Dictionary_Server_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Multithreaded_Dictionary_Server_jar2.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/data/dictionary.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/data/dictionary.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,14 +50,14 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="false" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="151" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$/src/DictionaryServer/data" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/json-simple-1.1.1.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/jar meta" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -57,7 +65,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="project.propGUI" />
@@ -79,7 +87,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DictionaryClient">
+  <component name="RunManager" selected="Application.DictionaryServer">
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
       <module name="Multithreaded Dictionary Server" />
@@ -170,7 +178,8 @@
       <workItem from="1585966228208" duration="7987000" />
       <workItem from="1585981899339" duration="1294000" />
       <workItem from="1586060239037" duration="9326000" />
-      <workItem from="1586154589128" duration="3448000" />
+      <workItem from="1586154589128" duration="8227000" />
+      <workItem from="1586210182185" duration="7251000" />
     </task>
     <servers />
   </component>

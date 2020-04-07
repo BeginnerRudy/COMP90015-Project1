@@ -5,8 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
+/**
+ * This class aims to be responsible for creating server side services depends on the
+ * received method code as defined in this class. This class follows a singleton factory
+ * pattern.
+ */
 public class ServiceFactory {
+    // separator is used to separate word and meaning.
     public static final String SEPARATOR = "\\$#";
+
+    // The method and response code are discussed in the report.
     public static final String ADD_METHOD = "A";
     public static final String DELETE_METHOD = "D";
     public static final String SEARCH_METHOD = "S";
@@ -23,9 +31,15 @@ public class ServiceFactory {
         return ServiceFactory.serviceFactory;
     }
 
+
+    /**
+     * @param socket The messages comes from this socket.
+     * @return The correct service, the client ask for.
+     */
     public Service getService(Socket socket) {
         String request = null;
         try {
+            // read request from the socket
             InputStream inputStream = socket.getInputStream();
             DataInputStream dis = new DataInputStream(inputStream);
             request = dis.readUTF();
@@ -33,9 +47,11 @@ public class ServiceFactory {
             e.printStackTrace();
         }
 
+        // parse the request into request method and request body
         String requestMethod = request.substring(0, 1);
         String body = request.substring(1);
 
+        // create and return service depends on the method.
         switch (requestMethod) {
             case ADD_METHOD:
                 return new AddService(socket, body);

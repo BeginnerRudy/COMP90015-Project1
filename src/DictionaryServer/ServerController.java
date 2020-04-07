@@ -1,5 +1,9 @@
 package DictionaryServer;
 
+/**
+ * This class is the server side controller, which is responsible for sending UI message
+ * to appropriate server component as well as update the GUI with respect to the server.
+ */
 public class ServerController {
     DictionaryServer server;
 
@@ -17,6 +21,9 @@ public class ServerController {
     public void serverGUI(ServerGUI serverGUI) {
     }
 
+    /**
+     * This method is used to shut the server.
+     */
     public void shutDownServer(){
         this.server.shutDown();
     }

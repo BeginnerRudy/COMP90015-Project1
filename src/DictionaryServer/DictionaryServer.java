@@ -7,6 +7,10 @@ import DictionaryServer.ThreadPool.ThreadPool;
 import java.io.*;
 import java.net.*;
 
+/**
+ * This class is responsible for all the functionalities that a multi-threading
+ * dictionary sever should have.
+ */
 public class DictionaryServer {
     int port;
     String dictionaryFilePath;
@@ -26,6 +30,10 @@ public class DictionaryServer {
         Dictionary.getDictionary().init(this.dictionaryFilePath);
     }
 
+    /**
+     * This class aims to shut the sever, that is close all the I/O stuffs safely
+     * and save the dictionary onto the disk.
+     */
     public void shutDown() {
         // Save the dictionary to disk before shutting down
         Dictionary.getDictionary().saveToDisk(this.dictionaryFilePath);
@@ -42,6 +50,11 @@ public class DictionaryServer {
         printServerMsg("Server closing ...");
     }
 
+
+    /**
+     * This method would turn on the server, that is the server start to listen
+     * and response request from clients.
+     */
     public void execute() {
         try {
             serverSocket = new ServerSocket(this.port);
@@ -58,17 +71,23 @@ public class DictionaryServer {
     }
 
 
+    /**
+     * @param args The commandline args
+     *
+     * This is the main method which is the execution flow of the dictionary server.
+     */
     public static void main(String[] args) {
         // parse the command line
-        if (args.length != 2) {
+        if (args.length != 3) {
             printServerMsg("The command line input is incorrect, usage is shown below.");
             printServerMsg("Usage: java <class> <port> <dictionary filepath>");
             printServerMsg("Server fail to start.");
             System.exit(1);
         }
 
-        int port = Integer.parseInt(args[0]);
-        String dictionaryFilePath = args[1];
+        // get the args
+        int port = Integer.parseInt(args[1]);
+        String dictionaryFilePath = args[2];
 
         // create a server
         DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
@@ -76,10 +95,16 @@ public class DictionaryServer {
         ServerGUI serverGUI = new ServerGUI("Dictionary Server", serverController);
         serverController.serverGUI(serverGUI);
         serverGUI.setVisible(true);
+
         // execute the server
         server.execute();
     }
 
+    /**
+     * @param msg The message to be print out
+     * This method aims to provide a consistent format of server message, every class
+     * which wants to send output should use this method.
+     */
     public static void printServerMsg(String msg) {
         String prompt = ">>> ";
         System.out.println(prompt + msg);
