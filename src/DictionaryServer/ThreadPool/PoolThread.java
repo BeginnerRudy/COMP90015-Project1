@@ -1,9 +1,17 @@
+/*
+ * @Author: Renjie Meng
+ * @Student ID: 877396
+ * */
+
 package DictionaryServer.ThreadPool;
 
 import DictionaryServer.DictionaryServer;
 
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * This class is the thread that in the ThreadPool class.
+ */
 public class PoolThread extends Thread {
     BlockingQueue taskQueue;
 
@@ -26,6 +34,9 @@ public class PoolThread extends Thread {
         }
     }
 
+    /**
+     * This method would interrupt the current thread.
+     */
     public void stopThread() {
         this.isStop = true;
         this.interrupt();

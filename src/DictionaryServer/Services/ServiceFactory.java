@@ -1,3 +1,8 @@
+/*
+ * @Author: Renjie Meng
+ * @Student ID: 877396
+ * */
+
 package DictionaryServer.Services;
 
 import org.json.simple.JSONObject;
