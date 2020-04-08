@@ -25,18 +25,16 @@ public class SearchService extends Service {
      */
     public synchronized void run() {
         try {
-            // TODO delete timer in search service
-            TimeUnit.SECONDS.sleep(3);
             this.word = (String) body.get(ServiceFactory.WORD_KEY);
             String meaning = Dictionary.getDictionary().getHashmap().get(word);
             // The word is in the dictionary, then delete it
             if (meaning != null){
                 // construct reply
                 JSONObject reply = new JSONObject();
-                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_SEARCH);
                 reply.put(ServiceFactory.MEANING_KEY, meaning);
                 super.writer.writeObject(reply);
-                System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully searched");
+                System.out.println(ServiceFactory.SUCCESS_SEARCH + "Successfully searched");
             }else{
                 // The word is not the dictionary, return fail to search
                 // construct reply
@@ -49,8 +47,6 @@ public class SearchService extends Service {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e){
-            // TODO remove it later, only for demo purpose
         }
         super.closeOutput();
     }

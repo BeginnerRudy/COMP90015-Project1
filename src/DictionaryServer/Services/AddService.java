@@ -61,13 +61,13 @@ public class AddService extends Service {
                 System.out.println(ServiceFactory.FAILURE_CODE + "Fail to add, because the meaning is empty");
                 // if the word is not duplicate and the meaning is not null.
             } else {
-                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_ADD);
                 String response_msg = "Successfully add: " + word + " - " + meaning;
                 reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, response_msg);
                 Dictionary.getDictionary().getHashmap().put(word, meaning);
                 super.writer.writeObject(reply);
                 System.out.println(Dictionary.getDictionary().getHashmap());
-                System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully add: " + word + " - " + meaning);
+                System.out.println(ServiceFactory.SUCCESS_ADD + "Successfully add: " + word + " - " + meaning);
             }
 
         } catch (IOException e) {

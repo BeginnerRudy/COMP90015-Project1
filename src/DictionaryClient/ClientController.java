@@ -33,7 +33,7 @@ public class ClientController {
      */
     public void add(String word, String meaning) {
         JSONObject reply = this.dictionaryClient.add(word, meaning);
-        updateViewForAddAndDelete(reply);
+        updateViewForAddAndDelete(reply, DictionaryClient.SUCCESS_ADD);
 
     }
 
@@ -45,7 +45,7 @@ public class ClientController {
     public void delete(String word) {
         JSONObject reply = this.dictionaryClient.delete(word);
 
-        updateViewForAddAndDelete(reply);
+        updateViewForAddAndDelete(reply, DictionaryClient.SUCCESS_DELETE);
     }
 
     /**
@@ -53,12 +53,12 @@ public class ClientController {
      *              <p>
      *              This method is used to update the ADD and DELETE button's view
      */
-    private void updateViewForAddAndDelete(JSONObject reply) {
+    private void updateViewForAddAndDelete(JSONObject reply, String success_code) {
         // parse the reply message
         String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
         // duplex the message depends on the response code,
         // message with different response code would have different text color.
-        if (responseCode.equals(DictionaryClient.SUCCESS_CODE)) {
+        if (responseCode.equals(success_code)) {
             String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
             clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
             clientGUI.getServerResponse().setText(message);
@@ -79,7 +79,7 @@ public class ClientController {
     public void search(String word) {
         JSONObject reply = this.dictionaryClient.search(word);
         String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
-        if (responseCode.equals(DictionaryClient.SUCCESS_CODE)) {
+        if (responseCode.equals(DictionaryClient.SUCCESS_SEARCH)) {
             String meaning = (String) reply.get(DictionaryClient.MEANING_KEY);
             clientGUI.getClientOutputTextArea().setText(meaning);
             clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));

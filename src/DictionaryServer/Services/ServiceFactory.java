@@ -15,8 +15,10 @@ public class ServiceFactory {
     public static final String ADD_METHOD = "A";
     public static final String DELETE_METHOD = "D";
     public static final String SEARCH_METHOD = "S";
-    public static final String SUCCESS_CODE = "1";
-    public static final String FAILURE_CODE = "0";
+    public static final String SUCCESS_ADD = "201";
+    public static final String SUCCESS_DELETE = "202";
+    public static final String SUCCESS_SEARCH = "203";
+    public static final String FAILURE_CODE = "404";
     public static final String REQUEST_HEADER = "request_method";
     public static final String WORD_KEY = "word";
     public static final String MEANING_KEY = "meaning";
@@ -66,8 +68,7 @@ public class ServiceFactory {
             case SEARCH_METHOD:
                 return new SearchService(socket, body, writer);
             default:
-                // TODO Here should be a undefined method exception
-                throw new ServiceNotFoundException("oh no");
+                throw new ServiceNotFoundException("The server does not provide " + requestMethod);
         }
     }
 

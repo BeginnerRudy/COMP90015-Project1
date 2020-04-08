@@ -43,7 +43,7 @@ public class DictionaryServer {
         this.threadPool.stop();
 
         try {
-            // Close the server socket -> TODO Tell currently connected user, the server is down.
+            // Close the server socket
             this.serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();

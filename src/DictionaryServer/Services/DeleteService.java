@@ -30,13 +30,13 @@ public class DeleteService extends Service {
             if (Dictionary.getDictionary().getHashmap().containsKey(this.word)) {
                 // construct object
                 JSONObject reply = new JSONObject();
-                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_CODE);
+                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_DELETE);
                 String message = "Successfully delete: " + word;
                 reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, message);
                 super.writer.writeObject(reply);
                 Dictionary.getDictionary().getHashmap().remove(this.word);
                 System.out.println(Dictionary.getDictionary().getHashmap());
-                System.out.println(ServiceFactory.SUCCESS_CODE + "Successfully delete: " + word);
+                System.out.println(ServiceFactory.SUCCESS_DELETE + "Successfully delete: " + word);
                 // if the word is not found
             } else {
                 // construct object
