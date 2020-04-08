@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * This class is responsible for client side GUI.
@@ -22,7 +24,9 @@ public class ClientGUI extends JFrame {
     private JTextArea serverResponse;
     private ClientController clientController;
 
-    public static final String WORKING = "Working ...";
+    String patternString = "[A-Za-z0-9 _.,!\"'/$]*";
+    Pattern pattern = Pattern.compile(patternString);
+
 
     public ClientGUI(String appName, ClientController clientController) {
         super(appName);
@@ -47,9 +51,15 @@ public class ClientGUI extends JFrame {
                 // the input message should not contain the preserved keyword SEPARATOR
                 String word = clientInputTextFiled.getText();
                 String meaning = clientOutputTextArea.getText();
+                Matcher wordMatcher = pattern.matcher(word);
+                Matcher meaningMatcher = pattern.matcher(meaning);
+                if (!meaningMatcher.matches() || !wordMatcher.matches()) {
+                    serverResponse.setForeground(new Color(255, 0, 0));
+                    serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
 
-                clientController.add(word, meaning);
-
+                } else {
+                    clientController.add(word, meaning);
+                }
             }
         });
     }
@@ -61,9 +71,15 @@ public class ClientGUI extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                serverResponse.setText(WORKING);
                 String word = clientInputTextFiled.getText();
-                clientController.delete(word);
+                Matcher wordMatcher = pattern.matcher(word);
+                if (!wordMatcher.matches()) {
+                    serverResponse.setForeground(new Color(255, 0, 0));
+                    serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
+
+                } else {
+                    clientController.delete(word);
+                }
             }
         });
     }
@@ -75,7 +91,15 @@ public class ClientGUI extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clientController.search(clientInputTextFiled.getText());
+                String word = clientInputTextFiled.getText();
+                Matcher wordMatcher = pattern.matcher(word);
+                if (!wordMatcher.matches()) {
+                    serverResponse.setForeground(new Color(255, 0, 0));
+                    serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
+
+                } else {
+                    clientController.search(word);
+                }
             }
         });
     }
