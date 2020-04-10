@@ -22,14 +22,12 @@ public class DictionaryServer {
     String dictionaryFilePath;
     ServerSocket serverSocket;
     ThreadPool threadPool;
-    ServiceFactory serviceFactory;
 
     public static final int MAX_T = 10;
 
     public DictionaryServer(int port, String dictionaryFilePath) {
         this.port = port;
         this.threadPool = new ThreadPool(this.MAX_T);
-        this.serviceFactory = ServiceFactory.getServiceFactory();
 
         // Initialize the dictionary by read file from disk
         this.dictionaryFilePath = dictionaryFilePath;
@@ -66,14 +64,12 @@ public class DictionaryServer {
             serverSocket = new ServerSocket(this.port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                Service service = serviceFactory.getService(socket);
-                threadPool.execute(service);
+                Connection connection = new Connection(socket);
+                threadPool.execute(connection);
             }
         } catch (SocketException e) {
             printServerMsg("Server socket is closed, the server is closed.");
-        } catch (ServiceNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e){
+        }  catch (IOException e){
             System.out.println("Server side IO exception");
             e.printStackTrace();
         }

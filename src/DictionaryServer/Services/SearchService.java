@@ -53,6 +53,6 @@ public class SearchService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.closeOutput();
+//        super.closeOutput();
     }
 }

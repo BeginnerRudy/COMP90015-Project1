@@ -45,13 +45,10 @@ public class ServiceFactory {
      * @param socket The messages comes from this socket.
      * @return The correct service, the client ask for.
      */
-    public Service getService(Socket socket) throws ServiceNotFoundException {
+    public Service getService(Socket socket, ObjectOutputStream writer, ObjectInputStream reader) throws ServiceNotFoundException {
         JSONObject request = null;
-        ObjectOutputStream writer = null;
         try {
             // read request from the socket
-            writer = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
             request = (JSONObject) reader.readObject();
         } catch (IOException e) {
             e.printStackTrace();

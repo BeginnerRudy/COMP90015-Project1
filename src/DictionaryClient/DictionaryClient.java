@@ -28,15 +28,28 @@ public class DictionaryClient {
     public static final String RESPONSE_CODE_KEY = "response_code";
     public static final String RESPONSE_MESSAGE_KEY = "response_message";
 
-    int port;
-    String address;
-    Socket socket;
-    ObjectOutputStream writer;
-    ObjectInputStream reader;
+    private int port;
+    private String address;
+    private Socket socket;
+    private ObjectOutputStream writer;
+    private ObjectInputStream reader;
 
     public DictionaryClient(String address, int port) {
         this.address = address;
         this.port = port;
+
+        try{
+            connectToServer();
+        }catch (UnknownHostException e) {
+            System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
+            e.printStackTrace();
+        } catch (ConnectException e) {
+            System.out.println("Failed to connect to the server: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Failed to add a word to the server");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -74,7 +87,6 @@ public class DictionaryClient {
         if (word.strip() != "" && meaning.strip() != "") {
 
             try {
-                this.connectToServer();
                 JSONObject add_request = new JSONObject();
                 // construct the add request
                 add_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
@@ -84,7 +96,7 @@ public class DictionaryClient {
                 // send request to the server
                 this.writer.writeObject(add_request);
                 JSONObject reply = (JSONObject) this.reader.readObject();
-                this.tearDown();
+//                this.tearDown();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
@@ -138,7 +150,7 @@ public class DictionaryClient {
     public JSONObject delete(String word) {
         if (word.strip() != "") {
             try {
-                this.connectToServer();
+//                this.connectToServer();
                 JSONObject delete_request = new JSONObject();
                 // construct the add request
                 delete_request.put(REQUEST_HEADER, DELETE_METHOD);
@@ -146,7 +158,7 @@ public class DictionaryClient {
                 // send request to the server
                 this.writer.writeObject(delete_request);
                 JSONObject reply = (JSONObject) this.reader.readObject();
-                this.tearDown();
+//                this.tearDown();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
@@ -196,7 +208,7 @@ public class DictionaryClient {
     public JSONObject search(String word) {
         if (word.strip() != "") {
             try {
-                this.connectToServer();
+//                this.connectToServer();
                 JSONObject search_request = new JSONObject();
                 // construct the add request
                 search_request.put(REQUEST_HEADER, SEARCH_METHOD);
@@ -205,7 +217,7 @@ public class DictionaryClient {
                 // send request to the server
                 this.writer.writeObject(search_request);
                 JSONObject reply = (JSONObject) this.reader.readObject();
-                this.tearDown();
+//                this.tearDown();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
