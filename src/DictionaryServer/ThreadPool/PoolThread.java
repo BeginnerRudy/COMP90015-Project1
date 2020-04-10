@@ -28,6 +28,7 @@ public class PoolThread extends Thread {
                 Runnable task = (Runnable) taskQueue.take();
                 DictionaryServer.printServerMsg("Thread processing new task!");
                 task.run();
+                DictionaryServer.printServerMsg("finished");
             } catch (InterruptedException e) {
                 DictionaryServer.printServerMsg("The thread in thread pool is interrupted due to server is closed.");
             }

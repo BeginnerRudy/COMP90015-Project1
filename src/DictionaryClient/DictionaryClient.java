@@ -38,9 +38,10 @@ public class DictionaryClient {
         this.address = address;
         this.port = port;
 
-        try{
+
+        try {
             connectToServer();
-        }catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
             e.printStackTrace();
         } catch (ConnectException e) {
@@ -57,24 +58,54 @@ public class DictionaryClient {
      *                     <p>
      *                     This method aims to connect to a server by the address and port.
      */
-    public void connectToServer() throws IOException {
+    private void connectToServer() throws IOException {
         this.socket = new Socket(this.address, this.port);
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
     }
 
+    private void reconnectToWrite(JSONObject request) throws IOException {
+        // send request to the server, reconnect if necessary
+        try {
+            this.writer.writeObject(request);
+        } catch (IOException e) {
+            this.connectToServer();
+            this.writer.writeObject(request);
+        }
+    }
+
+
+    private JSONObject reconnectToRead() throws IOException, ClassNotFoundException {
+        // send request to the server, reconnect if necessary
+        try {
+            return (JSONObject) this.reader.readObject();
+        } catch (IOException e) {
+            this.connectToServer();
+            return (JSONObject) this.reader.readObject();
+        }
+    }
+
     /**
      * This method aims to close all the IO stuff's safely.
      */
-    public void tearDown() {
+    public void disconnect() {
         try {
-            this.reader.close();
-            this.writer.close();
-            this.socket.close();
-        } catch (IOException e) {
+            if (!this.socket.isClosed()) {
 
+                this.reader.close();
+                this.writer.close();
+                this.socket.close();
+                System.out.println("The connection is closed now.");
+            } else {
+                System.out.println("Nothing to close, the client and server are disconnect.");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Teardown error");
         }
     }
+
 
     /**
      * @param word The word to be added.
@@ -93,10 +124,11 @@ public class DictionaryClient {
                 add_request.put(MEANING_KEY, meaning);
                 add_request.put(REQUEST_HEADER, ADD_METHOD);
 
-                // send request to the server
-                this.writer.writeObject(add_request);
-                JSONObject reply = (JSONObject) this.reader.readObject();
-//                this.tearDown();
+                // send request to the server, reconnect if necessary
+                reconnectToWrite(add_request);
+
+                // TODO socket exception: connection rest
+                JSONObject reply = reconnectToRead();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
@@ -150,15 +182,13 @@ public class DictionaryClient {
     public JSONObject delete(String word) {
         if (word.strip() != "") {
             try {
-//                this.connectToServer();
                 JSONObject delete_request = new JSONObject();
                 // construct the add request
                 delete_request.put(REQUEST_HEADER, DELETE_METHOD);
                 delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
-                // send request to the server
-                this.writer.writeObject(delete_request);
-                JSONObject reply = (JSONObject) this.reader.readObject();
-//                this.tearDown();
+                // send request to the server, reconnect if necessary
+                reconnectToWrite(delete_request);
+                JSONObject reply = reconnectToRead();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
@@ -206,18 +236,16 @@ public class DictionaryClient {
      * This method handles the search function both the success and failure cases.
      */
     public JSONObject search(String word) {
-        if (word.strip() != "") {
+        if (!word.strip().equals("")) {
             try {
-//                this.connectToServer();
                 JSONObject search_request = new JSONObject();
                 // construct the add request
                 search_request.put(REQUEST_HEADER, SEARCH_METHOD);
                 search_request.put(WORD_KEY, word.toLowerCase());// lower casing the word, for better match
 
                 // send request to the server
-                this.writer.writeObject(search_request);
-                JSONObject reply = (JSONObject) this.reader.readObject();
-//                this.tearDown();
+                reconnectToWrite(search_request);
+                JSONObject reply = reconnectToRead();
                 return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {

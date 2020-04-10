@@ -1,7 +1,7 @@
 /*
-* @Author: Renjie Meng
-* @Student ID: 877396
-* */
+ * @Author: Renjie Meng
+ * @Student ID: 877396
+ * */
 
 package DictionaryClient;
 
@@ -27,6 +27,7 @@ public class ClientGUI extends JFrame {
 
     private JLabel statusConnectivityLabel;
     private JTextArea serverResponse;
+    private JButton disconnectButton;
     private ClientController clientController;
 
     String patternString = "[A-Za-z0-9 _.,!\"'/$]*";
@@ -44,6 +45,7 @@ public class ClientGUI extends JFrame {
         setAddButtonLogic();
         setDeleteButtonLogic();
         setSearchButtonLogic();
+        setDisconnectButtonLogic();
     }
 
     /**
@@ -65,6 +67,18 @@ public class ClientGUI extends JFrame {
                 } else {
                     clientController.add(word, meaning);
                 }
+            }
+        });
+    }
+
+    /**
+     * Set the disconnect button logic
+     */
+    public void setDisconnectButtonLogic() {
+        disconnectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clientController.disconnect();
             }
         });
     }
@@ -136,7 +150,7 @@ public class ClientGUI extends JFrame {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(15, 10, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(15, 17, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.setAutoscrolls(false);
         mainPanel.setPreferredSize(new Dimension(492, 458));
         mainPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -158,14 +172,14 @@ public class ClientGUI extends JFrame {
         scrollPane1.setViewportView(clientOutputTextArea);
         searchButton = new JButton();
         searchButton.setText("Search");
-        mainPanel.add(searchButton, new com.intellij.uiDesigner.core.GridConstraints(0, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(searchButton, new com.intellij.uiDesigner.core.GridConstraints(0, 9, 1, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deleteButton = new JButton();
         deleteButton.setText("Delete ");
-        mainPanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(4, 9, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(4, 9, 2, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         addButton = new JButton();
         addButton.setActionCommand("Add");
         addButton.setText(" Add ");
-        mainPanel.add(addButton, new com.intellij.uiDesigner.core.GridConstraints(2, 9, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(addButton, new com.intellij.uiDesigner.core.GridConstraints(2, 9, 2, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         statusConnectivityLabel = new JLabel();
         statusConnectivityLabel.setText("System message:");
         mainPanel.add(statusConnectivityLabel, new com.intellij.uiDesigner.core.GridConstraints(14, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(120, 25), new Dimension(120, 25), new Dimension(120, 25), 0, false));
@@ -183,6 +197,9 @@ public class ClientGUI extends JFrame {
         serverResponse.setPreferredSize(new Dimension(354, 50));
         serverResponse.setText("");
         mainPanel.add(serverResponse, new com.intellij.uiDesigner.core.GridConstraints(14, 2, 1, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 50), new Dimension(300, 50), new Dimension(300, 50), 0, false));
+        disconnectButton = new JButton();
+        disconnectButton.setText("Disconnect");
+        mainPanel.add(disconnectButton, new com.intellij.uiDesigner.core.GridConstraints(13, 9, 1, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

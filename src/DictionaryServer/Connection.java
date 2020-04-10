@@ -1,5 +1,6 @@
 package DictionaryServer;
 
+import DictionaryServer.Services.InactiveServiceException;
 import DictionaryServer.Services.Service;
 import DictionaryServer.Services.ServiceFactory;
 import DictionaryServer.Services.ServiceNotFoundException;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * This class represents a tcp connection between client and server.
@@ -30,15 +32,31 @@ public class Connection implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            try {
+
+
+        try {
+            // TODO set time out marcos
+            socket.setSoTimeout(5000);
+            while (true) {
                 Service service = serviceFactory.getService(this.socket, writer, reader);
                 service.run();
-            } catch (ServiceNotFoundException e) {
-                e.printStackTrace();
             }
+        } catch (ServiceNotFoundException e) {
+            e.printStackTrace();
+        } catch (InactiveServiceException e) {
+            try {
+                writer.close();
+                reader.close();
+                socket.close();
+                System.out.println("Socket closed due to time out");
+            }catch (IOException ee){
+                ee.printStackTrace();
+            }
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Connection class IO exception in run method");
         }
-
     }
 
 }

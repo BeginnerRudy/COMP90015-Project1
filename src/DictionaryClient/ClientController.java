@@ -5,8 +5,6 @@
 
 package DictionaryClient;
 
-import DictionaryClient.DictionaryClient;
-import DictionaryServer.Dictionary;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -98,4 +96,13 @@ public class ClientController {
         }
 
     }
+
+
+    /**
+     * This method is responsible for disconnect the client and the server
+     */
+    public void disconnect() {
+        dictionaryClient.disconnect();
+    }
+
 }

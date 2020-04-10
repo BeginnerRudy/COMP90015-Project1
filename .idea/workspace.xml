@@ -8,12 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/InactiveServiceException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +77,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DictionaryClient">
+  <component name="RunManager" selected="Application.DictionaryClient2">
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
       <module name="Multithreaded Dictionary Server" />
@@ -169,7 +173,7 @@
       <workItem from="1586264635983" duration="1638000" />
       <workItem from="1586296855494" duration="14002000" />
       <workItem from="1586507768560" duration="1525000" />
-      <workItem from="1586509488113" duration="4216000" />
+      <workItem from="1586509488113" duration="10231000" />
     </task>
     <servers />
   </component>
