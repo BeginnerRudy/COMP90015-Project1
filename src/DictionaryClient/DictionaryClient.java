@@ -77,7 +77,7 @@ public class DictionaryClient {
                 this.connectToServer();
                 JSONObject add_request = new JSONObject();
                 // construct the add request
-                add_request.put(WORD_KEY, word);
+                add_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
                 add_request.put(MEANING_KEY, meaning);
                 add_request.put(REQUEST_HEADER, ADD_METHOD);
 
@@ -142,7 +142,7 @@ public class DictionaryClient {
                 JSONObject delete_request = new JSONObject();
                 // construct the add request
                 delete_request.put(REQUEST_HEADER, DELETE_METHOD);
-                delete_request.put(WORD_KEY, word);
+                delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
                 // send request to the server
                 this.writer.writeObject(delete_request);
                 JSONObject reply = (JSONObject) this.reader.readObject();
@@ -200,7 +200,7 @@ public class DictionaryClient {
                 JSONObject search_request = new JSONObject();
                 // construct the add request
                 search_request.put(REQUEST_HEADER, SEARCH_METHOD);
-                search_request.put(WORD_KEY, word);
+                search_request.put(WORD_KEY, word.toLowerCase());// lower casing the word, for better match
 
                 // send request to the server
                 this.writer.writeObject(search_request);
