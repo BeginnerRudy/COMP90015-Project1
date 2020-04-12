@@ -22,9 +22,10 @@ public class DictionaryServer {
     private long connectionCount = 0;
     private String dictionaryFilePath;
     private ServerSocket serverSocket;
+
     private ThreadPool threadPool;
 
-    public static final int MAX_T = 1;
+    public static final int MAX_T = 5;
 
     public DictionaryServer(int port, String dictionaryFilePath) {
         this.port = port;
@@ -53,6 +54,10 @@ public class DictionaryServer {
             e.printStackTrace();
         }
         printServerMsg("Server closing ...");
+    }
+
+    public ThreadPool getThreadPool() {
+        return threadPool;
     }
 
 
@@ -97,9 +102,9 @@ public class DictionaryServer {
         System.out.println("The port is" + port);
 
         // create a server
+        ServerGUI serverGUI = new ServerGUI("Dictionary Server");
         DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
         ServerController serverController = ServerController.getServerController();
-        ServerGUI serverGUI = new ServerGUI("Dictionary Server");
         serverController.init(server, serverGUI);
         serverGUI.setVisible(true);
 

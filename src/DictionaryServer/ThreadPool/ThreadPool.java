@@ -17,10 +17,11 @@ import java.util.concurrent.BlockingQueue;
  * mainly uses the BlockingQueue to achieve thread pool's functionality.
  */
 public class ThreadPool {
-    BlockingQueue taskQueue;
-    List<PoolThread> threadPool;
-    boolean isStop = false;
+    private BlockingQueue taskQueue;
 
+    private List<PoolThread> threadPool;
+
+    boolean isStop = false;
     /**
      * @param maxThread The maximum size of the thread pool
      * This is the constructor of the thread pool.
@@ -58,6 +59,10 @@ public class ThreadPool {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<PoolThread> getThreads() {
+        return threadPool;
     }
 
     /**

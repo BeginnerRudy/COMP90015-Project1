@@ -35,9 +35,6 @@ public class Connection implements Runnable {
 
     @Override
     public void run() {
-        ServerController.getServerController().addNewConnectionToGUI(this);
-
-
         try {
             // TODO set time out marcos
             socket.setSoTimeout(5000);

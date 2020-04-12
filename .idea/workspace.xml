@@ -8,13 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +40,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="151" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="false" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
@@ -171,7 +172,7 @@
       <workItem from="1586296855494" duration="14002000" />
       <workItem from="1586507768560" duration="1525000" />
       <workItem from="1586509488113" duration="10443000" />
-      <workItem from="1586663569728" duration="5098000" />
+      <workItem from="1586663569728" duration="6705000" />
     </task>
     <servers />
   </component>

@@ -6,6 +6,7 @@
 package DictionaryServer;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,13 +20,14 @@ public class ServerGUI extends JFrame {
     private JPanel mainPanel;
     private JButton turnOffServerButton;
 
-    private JList list1;
 
     private JButton killThreadButton;
+
+    private JTable table1;
+
+    private DefaultTableModel dtm = new DefaultTableModel(DictionaryServer.MAX_T, 2);
+
     private ServerController serverController = ServerController.getServerController();
-
-    DefaultListModel defaultListModel = new DefaultListModel();
-
 
     public ServerGUI(String appName) {
         super(appName);
@@ -34,7 +36,12 @@ public class ServerGUI extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
 
-        list1.setModel(defaultListModel);
+        // add header of the table
+        String header[] = new String[]{"Thread", "Status"};
+        // add header in table model
+        dtm.setColumnIdentifiers(header);
+        //set model into the table object
+        table1.setModel(dtm);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -48,9 +55,14 @@ public class ServerGUI extends JFrame {
     }
 
 
-    public DefaultListModel getDefaultListModel() {
-        return defaultListModel;
+    public JTable getTable1() {
+        return table1;
     }
+
+    public DefaultTableModel getDtm() {
+        return dtm;
+    }
+
 
 
     /**
@@ -63,10 +75,6 @@ public class ServerGUI extends JFrame {
                 serverController.killConnection();
             }
         });
-    }
-
-    public JList getList1() {
-        return list1;
     }
 
 
@@ -91,12 +99,12 @@ public class ServerGUI extends JFrame {
         turnOffServerButton.setText("Turn off Server");
         mainPanel.add(turnOffServerButton, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         killThreadButton = new JButton();
-        killThreadButton.setText("Kill Connection");
+        killThreadButton.setText("Kill Thread");
         mainPanel.add(killThreadButton, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         mainPanel.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        list1 = new JList();
-        scrollPane1.setViewportView(list1);
+        table1 = new JTable();
+        scrollPane1.setViewportView(table1);
     }
 
     /**

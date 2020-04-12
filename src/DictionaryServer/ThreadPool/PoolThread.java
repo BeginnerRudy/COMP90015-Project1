@@ -42,4 +42,8 @@ public class PoolThread extends Thread {
         this.isStop = true;
         this.interrupt();
     }
+
+    public boolean isStop() {
+        return isStop;
+    }
 }

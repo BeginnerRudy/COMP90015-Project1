@@ -5,6 +5,10 @@
 
 package DictionaryServer;
 
+import DictionaryServer.ThreadPool.PoolThread;
+
+import java.util.List;
+
 /**
  * This class is the server side controller, which is responsible for sending UI message
  * to appropriate server component as well as update the GUI with respect to the server.
@@ -24,21 +28,21 @@ public class ServerController {
     public void init(DictionaryServer dictionaryServer, ServerGUI serverGUI) {
         this.server = dictionaryServer;
         this.serverGUI = serverGUI;
+        ServerController.getServerController().initThreadsOnGUI(server.getThreadPool().getThreads());
+
     }
 
-    public synchronized void addNewConnectionToGUI(Connection connection){
-        this.serverGUI.getDefaultListModel().addElement(CONNECTION + connection.getId());
+    public synchronized void initThreadsOnGUI(List<PoolThread> threads){
+        // add row dynamically into the table
+        for (PoolThread thread : threads) {
+            this.serverGUI.getDtm().addRow(new Object[]{"Thread " + thread.getId(), thread.isStop()});
+        }
     }
 
     public synchronized void removeConnectionFromGUI(Connection connection){
-        this.serverGUI.getDefaultListModel().removeElement(CONNECTION + connection.getId());
     }
 
     public synchronized void killConnection(){
-        // get the selected value and remove it from list
-        int selectedIndex = this.serverGUI.getList1().getSelectedIndex();
-        this.serverGUI.getDefaultListModel().remove(selectedIndex);
-        this.serverGUI.getList1().updateUI();
     }
 
     /**
