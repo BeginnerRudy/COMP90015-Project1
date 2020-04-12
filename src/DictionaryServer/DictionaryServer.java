@@ -18,10 +18,11 @@ import java.net.*;
  * dictionary sever should have.
  */
 public class DictionaryServer {
-    int port;
-    String dictionaryFilePath;
-    ServerSocket serverSocket;
-    ThreadPool threadPool;
+    private int port;
+    private long connectionCount = 0;
+    private String dictionaryFilePath;
+    private ServerSocket serverSocket;
+    private ThreadPool threadPool;
 
     public static final int MAX_T = 1;
 
@@ -64,8 +65,7 @@ public class DictionaryServer {
             serverSocket = new ServerSocket(this.port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                Connection connection = new Connection(socket);
-                // TODO add connection to server GUI
+                Connection connection = new Connection(socket, connectionCount++);
                 ServerController.getServerController().addNewConnectionToGUI(connection);
                 threadPool.execute(connection);
             }

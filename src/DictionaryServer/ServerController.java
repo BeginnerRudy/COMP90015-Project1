@@ -5,20 +5,17 @@
 
 package DictionaryServer;
 
-import javax.swing.*;
-
 /**
  * This class is the server side controller, which is responsible for sending UI message
  * to appropriate server component as well as update the GUI with respect to the server.
  */
 public class ServerController {
     static ServerController serverController = new ServerController();
-    public static final String Thread = "Thread ";
+    public static final String CONNECTION = "Connection ";
     DictionaryServer server;
 
     ServerGUI serverGUI;
 
-    int threadCount = 0;
 
     public synchronized static ServerController getServerController() {
         return serverController;
@@ -30,12 +27,11 @@ public class ServerController {
     }
 
     public synchronized void addNewConnectionToGUI(Connection connection){
-        this.serverGUI.getDefaultListModel().addElement(Thread + threadCount);
-        threadCount += 1;
+        this.serverGUI.getDefaultListModel().addElement(CONNECTION + connection.getId());
     }
 
     public synchronized void removeConnectionFromGUI(Connection connection){
-
+        this.serverGUI.getDefaultListModel().removeElement(CONNECTION + connection.getId());
     }
 
     public synchronized void killThread(){

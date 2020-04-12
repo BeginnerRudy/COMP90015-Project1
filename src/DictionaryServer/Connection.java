@@ -16,17 +16,20 @@ import java.net.SocketTimeoutException;
  * This class is fully responsible for all connections stuffs with clients.
  */
 public class Connection implements Runnable {
-    Socket socket;
-    ServiceFactory serviceFactory;
-    ObjectOutputStream writer;
-    ObjectInputStream reader;
+    private Socket socket;
+    private ServiceFactory serviceFactory;
+    private ObjectOutputStream writer;
+    private ObjectInputStream reader;
+
+    private long id;
 
 
-    public Connection(Socket socket) throws IOException {
+    public Connection(Socket socket, long id) throws IOException {
         this.socket = socket;
         this.serviceFactory = ServiceFactory.getServiceFactory();
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
+        this.id = id;
     }
 
 
@@ -60,6 +63,10 @@ public class Connection implements Runnable {
 
         // TODO remove connection from GUI
         ServerController.getServerController().removeConnectionFromGUI(this);
+    }
+
+    public long getId() {
+        return id;
     }
 
 }
