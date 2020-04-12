@@ -45,6 +45,7 @@ public class ServerGUI extends JFrame {
             }
         });
 
+        setKillThreadButton();
     }
 
 

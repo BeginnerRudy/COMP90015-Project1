@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 public class ServerController {
     static ServerController serverController = new ServerController();
-
+    public static final String Thread = "Thread ";
     DictionaryServer server;
 
     ServerGUI serverGUI;
@@ -30,7 +30,7 @@ public class ServerController {
     }
 
     public synchronized void addNewConnectionToGUI(Connection connection){
-        this.serverGUI.getDefaultListModel().addElement(threadCount);
+        this.serverGUI.getDefaultListModel().addElement(Thread + threadCount);
         threadCount += 1;
     }
 
@@ -39,7 +39,10 @@ public class ServerController {
     }
 
     public synchronized void killThread(){
-
+        // get the selected value and remove it from list
+        int selectedIndex = this.serverGUI.getList1().getSelectedIndex();
+        this.serverGUI.getDefaultListModel().remove(selectedIndex);
+        this.serverGUI.getList1().updateUI();
     }
 
     /**
