@@ -6,6 +6,7 @@
 package DictionaryServer.ThreadPool;
 
 import DictionaryServer.DictionaryServer;
+import DictionaryServer.ServerController;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -16,6 +17,7 @@ public class PoolThread extends Thread {
     BlockingQueue taskQueue;
 
     boolean isStop = false;
+    boolean isIdle = true;
 
     public PoolThread(BlockingQueue taskQueue) {
         this.taskQueue = taskQueue;
@@ -26,9 +28,11 @@ public class PoolThread extends Thread {
         while (!this.isStop) {
             try {
                 Runnable task = (Runnable) taskQueue.take();
+                ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Running");
                 DictionaryServer.printServerMsg("Thread processing new task!");
                 task.run();
                 DictionaryServer.printServerMsg("finished");
+                ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Idle");
             } catch (InterruptedException e) {
                 DictionaryServer.printServerMsg("The thread in thread pool is interrupted due to server is closed.");
             }

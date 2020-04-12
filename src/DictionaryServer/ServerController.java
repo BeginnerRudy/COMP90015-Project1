@@ -7,6 +7,8 @@ package DictionaryServer;
 
 import DictionaryServer.ThreadPool.PoolThread;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public class ServerController {
     static ServerController serverController = new ServerController();
-    public static final String CONNECTION = "Connection ";
+    public static final String THREAD = "Thread ";
     DictionaryServer server;
 
     ServerGUI serverGUI;
@@ -33,14 +35,27 @@ public class ServerController {
     }
 
     public synchronized void initThreadsOnGUI(List<PoolThread> threads){
+        JTable s = this.serverGUI.getTable1();
         // add row dynamically into the table
         for (PoolThread thread : threads) {
-            this.serverGUI.getDtm().addRow(new Object[]{"Thread " + thread.getId(), thread.isStop()});
+            this.serverGUI.getDtm().addRow(new Object[]{THREAD + thread.getId(), thread.isStop()});
         }
     }
 
-    public synchronized void removeConnectionFromGUI(Connection connection){
+    public synchronized void changeThreadStateOnGUI(long threadID, String status){
+
+        DefaultTableModel dtm = serverGUI.getDtm();
+
+        for (int i = 0; i < dtm.getRowCount(); i ++){
+            for (int j = 0; i < dtm.getColumnCount(); j ++){
+                if (dtm.getValueAt(i, j).equals(THREAD+threadID)){
+
+                    serverGUI.getDtm().setValueAt(status, i, j);
+                }
+            }
+        }
     }
+
 
     public synchronized void killConnection(){
     }

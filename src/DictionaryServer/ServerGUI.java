@@ -25,7 +25,7 @@ public class ServerGUI extends JFrame {
 
     private JTable table1;
 
-    private DefaultTableModel dtm = new DefaultTableModel(DictionaryServer.MAX_T, 2);
+    private DefaultTableModel dtm = new DefaultTableModel(0, 2);
 
     private ServerController serverController = ServerController.getServerController();
 

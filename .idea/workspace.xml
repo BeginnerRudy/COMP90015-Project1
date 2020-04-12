@@ -12,7 +12,6 @@
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" afterDir="false" />
@@ -75,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DictionaryClient2">
+  <component name="RunManager" selected="Application.DictionaryClient">
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
       <module name="Multithreaded Dictionary Server" />
@@ -138,8 +137,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.DictionaryServer" />
-        <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.DictionaryClient" />
+        <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.ClientGUI" />
       </list>
     </recent_temporary>
@@ -172,7 +171,8 @@
       <workItem from="1586296855494" duration="14002000" />
       <workItem from="1586507768560" duration="1525000" />
       <workItem from="1586509488113" duration="10443000" />
-      <workItem from="1586663569728" duration="6705000" />
+      <workItem from="1586663569728" duration="7571000" />
+      <workItem from="1586686085480" duration="3799000" />
     </task>
     <servers />
   </component>

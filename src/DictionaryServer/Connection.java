@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 /**
  * This class represents a tcp connection between client and server.
@@ -59,8 +58,6 @@ public class Connection implements Runnable {
             System.out.println("Connection class IO exception in run method");
         }
 
-        // TODO remove connection from GUI
-        ServerController.getServerController().removeConnectionFromGUI(this);
     }
 
     public long getId() {

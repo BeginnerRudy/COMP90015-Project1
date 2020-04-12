@@ -12,6 +12,7 @@ import DictionaryServer.ThreadPool.ThreadPool;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class is responsible for all the functionalities that a multi-threading
@@ -66,6 +67,7 @@ public class DictionaryServer {
      * and response request from clients.
      */
     public void execute() {
+        ServerController.getServerController().initThreadsOnGUI(this.threadPool.getThreads());
         try {
             serverSocket = new ServerSocket(this.port);
             while (true) {
@@ -101,12 +103,21 @@ public class DictionaryServer {
         String dictionaryFilePath = args[2];
         System.out.println("The port is" + port);
 
+
         // create a server
         ServerGUI serverGUI = new ServerGUI("Dictionary Server");
-        DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
-        ServerController serverController = ServerController.getServerController();
-        serverController.init(server, serverGUI);
         serverGUI.setVisible(true);
+//        try {
+//
+//            TimeUnit.SECONDS.sleep(10);
+//        }catch (InterruptedException e){
+//            e.printStackTrace();
+//            // TODO
+//        }
+
+        ServerController serverController = ServerController.getServerController();
+        DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
+        serverController.init(server, serverGUI);
 
         // execute the server
         server.execute();
