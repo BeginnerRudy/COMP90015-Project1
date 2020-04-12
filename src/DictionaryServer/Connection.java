@@ -35,6 +35,7 @@ public class Connection implements Runnable {
 
     @Override
     public void run() {
+        ServerController.getServerController().addNewConnectionToGUI(this);
 
 
         try {

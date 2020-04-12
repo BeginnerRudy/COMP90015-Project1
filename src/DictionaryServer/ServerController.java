@@ -34,7 +34,7 @@ public class ServerController {
         this.serverGUI.getDefaultListModel().removeElement(CONNECTION + connection.getId());
     }
 
-    public synchronized void killThread(){
+    public synchronized void killConnection(){
         // get the selected value and remove it from list
         int selectedIndex = this.serverGUI.getList1().getSelectedIndex();
         this.serverGUI.getDefaultListModel().remove(selectedIndex);

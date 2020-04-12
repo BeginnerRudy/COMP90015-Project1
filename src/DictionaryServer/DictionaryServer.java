@@ -66,7 +66,6 @@ public class DictionaryServer {
             while (true) {
                 Socket socket = serverSocket.accept();
                 Connection connection = new Connection(socket, connectionCount++);
-                ServerController.getServerController().addNewConnectionToGUI(connection);
                 threadPool.execute(connection);
             }
         } catch (SocketException e) {

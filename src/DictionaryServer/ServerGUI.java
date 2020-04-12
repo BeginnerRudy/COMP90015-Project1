@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.regex.Matcher;
 
 /**
  * This class is responsible for the server side GUI
@@ -61,7 +60,7 @@ public class ServerGUI extends JFrame {
         killThreadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                serverController.killThread();
+                serverController.killConnection();
             }
         });
     }
