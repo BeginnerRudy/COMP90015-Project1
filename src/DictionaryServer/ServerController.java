@@ -30,7 +30,6 @@ public class ServerController {
     public void init(DictionaryServer dictionaryServer, ServerGUI serverGUI) {
         this.server = dictionaryServer;
         this.serverGUI = serverGUI;
-        ServerController.getServerController().initThreadsOnGUI(server.getThreadPool().getThreads());
 
     }
 
@@ -38,7 +37,7 @@ public class ServerController {
         JTable s = this.serverGUI.getTable1();
         // add row dynamically into the table
         for (PoolThread thread : threads) {
-            this.serverGUI.getDtm().addRow(new Object[]{THREAD + thread.getId(), thread.isStop()});
+            this.serverGUI.getDtm().addRow(new Object[]{THREAD + thread.getId(), "idle"});
         }
     }
 
@@ -47,12 +46,10 @@ public class ServerController {
         DefaultTableModel dtm = serverGUI.getDtm();
 
         for (int i = 0; i < dtm.getRowCount(); i ++){
-            for (int j = 0; i < dtm.getColumnCount(); j ++){
-                if (dtm.getValueAt(i, j).equals(THREAD+threadID)){
+                if (dtm.getValueAt(i, 0).equals(THREAD+threadID)){
 
-                    serverGUI.getDtm().setValueAt(status, i, j);
+                    serverGUI.getDtm().setValueAt(status, i, 1);
                 }
-            }
         }
     }
 
