@@ -17,10 +17,10 @@ import java.net.Socket;
  */
 public class Connection implements Runnable {
     private Socket socket;
+
     private ServiceFactory serviceFactory;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
-
 
 
     public Connection(Socket socket) throws IOException {
@@ -61,6 +61,10 @@ public class Connection implements Runnable {
 
     public InetAddress getIP() {
         return this.socket.getInetAddress();
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
 }

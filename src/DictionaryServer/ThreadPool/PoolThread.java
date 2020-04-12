@@ -9,6 +9,7 @@ import DictionaryServer.DictionaryServer;
 import DictionaryServer.ServerController;
 import DictionaryServer.Connection;
 
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -18,7 +19,7 @@ public class PoolThread extends Thread {
     BlockingQueue taskQueue;
 
     boolean isStop = false;
-    boolean isIdle = true;
+    Connection connection;
 
     public PoolThread(BlockingQueue taskQueue) {
         this.taskQueue = taskQueue;
@@ -28,13 +29,16 @@ public class PoolThread extends Thread {
     public void run() {
         while (!this.isStop) {
             try {
-                Connection connection = (Connection) taskQueue.take();
+                this.connection = (Connection) taskQueue.take();
                 ServerController.getServerController().changeThreadStateOnGUI(this.getId(), connection.getIP().toString());
                 DictionaryServer.printServerMsg("Thread processing new task!");
                 connection.run();
                 DictionaryServer.printServerMsg("finished");
-                ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Idle");
+                if (!this.isStop) {
+                    ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Idle");
+                }
             } catch (InterruptedException e) {
+                this.interrupt();
                 DictionaryServer.printServerMsg("The thread in thread pool is interrupted due to server is closed.");
             }
         }
@@ -45,8 +49,14 @@ public class PoolThread extends Thread {
      */
     public void stopThread() {
         this.isStop = true;
-        ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "stopped");
+        ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "interrupted");
         this.interrupt();
-    }
+        try {
+            this.connection.getSocket().close();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

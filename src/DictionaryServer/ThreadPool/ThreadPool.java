@@ -89,5 +89,53 @@ public class ThreadPool {
         }
     }
 
+    public int getRunningThreadCount() {
+        int count = 0;
+        for (PoolThread thread : this.threadPool) {
+            if (!thread.isStop) {
+                count++;
+
+            }
+        }
+        return count;
+    }
+
+    public ArrayList<Long> clean() {
+        ArrayList<Long> deadIds = new ArrayList();
+        ArrayList<PoolThread> copy = new ArrayList(threadPool);
+        for (PoolThread thread : copy) {
+            if (thread.isStop) {
+                deadIds.add(thread.getId());
+                threadPool.remove(thread);
+            }
+        }
+
+        return deadIds;
+    }
+
+    public ArrayList<Long> add(int n) {
+        ArrayList<PoolThread> temp = new ArrayList<>();
+        ArrayList<Long> newIds = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            temp.add(new PoolThread(this.taskQueue));
+        }
+
+        for (PoolThread thread : temp) {
+            thread.start();
+            newIds.add(thread.getId());
+        }
+
+        this.threadPool.addAll(temp);
+
+        return newIds;
+    }
+
+    public ArrayList<Long> getThreadIds(){
+        ArrayList<Long> threadIds = new ArrayList<>();
+        for (PoolThread thread : threadPool) {
+            threadIds.add(thread.getId());
+        }
+        return threadIds;
+    }
 
 }

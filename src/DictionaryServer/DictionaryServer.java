@@ -5,14 +5,10 @@
 
 package DictionaryServer;
 
-import DictionaryServer.Services.Service;
-import DictionaryServer.Services.ServiceFactory;
-import DictionaryServer.Services.ServiceNotFoundException;
 import DictionaryServer.ThreadPool.ThreadPool;
 
 import java.io.*;
 import java.net.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class is responsible for all the functionalities that a multi-threading
@@ -66,7 +62,7 @@ public class DictionaryServer {
      * and response request from clients.
      */
     public void execute() {
-        ServerController.getServerController().initThreadsOnGUI(this.threadPool.getThreads());
+        ServerController.getServerController().addThreadsOnGUI(this.threadPool.getThreadIds());
         try {
             serverSocket = new ServerSocket(this.port);
             while (true) {
@@ -131,4 +127,5 @@ public class DictionaryServer {
         String prompt = ">>> ";
         System.out.println(prompt + msg);
     }
+
 }
