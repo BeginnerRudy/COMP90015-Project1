@@ -97,9 +97,9 @@ public class DictionaryServer {
 
         // create a server
         DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
-        ServerController serverController = new ServerController(server);
+        ServerController serverController = ServerController.getServerController()
         ServerGUI serverGUI = new ServerGUI("Dictionary Server", serverController);
-        serverController.serverGUI(serverGUI);
+        serverController.init(server, serverGUI);
         serverGUI.setVisible(true);
 
         // execute the server

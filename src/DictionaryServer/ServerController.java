@@ -10,26 +10,27 @@ package DictionaryServer;
  * to appropriate server component as well as update the GUI with respect to the server.
  */
 public class ServerController {
+    static ServerController serverController = new ServerController();
+
     DictionaryServer server;
 
     ServerGUI serverGUI;
 
-    public ServerController(DictionaryServer dictionaryServer) {
-        this.server = dictionaryServer;
+    public static ServerController getServerController() {
+        return serverController;
     }
 
-
-    public void setServerGUI(ServerGUI serverGUI) {
+    public void init(DictionaryServer dictionaryServer, ServerGUI serverGUI) {
+        this.server = dictionaryServer;
         this.serverGUI = serverGUI;
     }
 
-    public void serverGUI(ServerGUI serverGUI) {
-    }
 
     /**
      * This method is used to shut the server.
      */
-    public void shutDownServer(){
+    public void shutDownServer() {
         this.server.shutDown();
+
     }
 }
