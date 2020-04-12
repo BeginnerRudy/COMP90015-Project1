@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class DictionaryServer {
     private int port;
-    private long connectionCount = 0;
     private String dictionaryFilePath;
     private ServerSocket serverSocket;
 
@@ -46,7 +45,7 @@ public class DictionaryServer {
         Dictionary.getDictionary().saveToDisk(this.dictionaryFilePath);
 
         // Interrupt all threads
-        this.threadPool.stop();
+        this.threadPool.stopAll();
 
         try {
             // Close the server socket
@@ -72,7 +71,7 @@ public class DictionaryServer {
             serverSocket = new ServerSocket(this.port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                Connection connection = new Connection(socket, connectionCount++);
+                Connection connection = new Connection(socket);
                 threadPool.execute(connection);
             }
         } catch (SocketException e) {

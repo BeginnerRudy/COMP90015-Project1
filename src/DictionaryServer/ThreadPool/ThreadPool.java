@@ -24,9 +24,10 @@ public class ThreadPool {
     private List<PoolThread> threadPool;
 
     boolean isStop = false;
+
     /**
      * @param maxThread The maximum size of the thread pool
-     * This is the constructor of the thread pool.
+     *                  This is the constructor of the thread pool.
      */
     public ThreadPool(int maxThread) {
         taskQueue = new ArrayBlockingQueue(maxThread);
@@ -36,8 +37,8 @@ public class ThreadPool {
 
     /**
      * @param amount The number of threads.
-     *
-     * This method aims to create and start given amount of thread in the thread pool.
+     *               <p>
+     *               This method aims to create and start given amount of thread in the thread pool.
      */
     private void spawn(int amount) {
         for (int i = 0; i < amount; ++i) {
@@ -51,7 +52,7 @@ public class ThreadPool {
 
     /**
      * @param task The Runnable task to be executed by the thread pool.
-     * This method is used to submit new Runnable task to the thread pool/
+     *             This method is used to submit new Runnable task to the thread pool/
      */
     public void execute(Runnable task) {
         try {
@@ -70,7 +71,18 @@ public class ThreadPool {
     /**
      * This method is used to terminate all the execution of the thread pool.
      */
-    public void stop() {
+    public void stop(long id) {
+        for (PoolThread thread : this.threadPool) {
+            if (thread.getId() == id) {
+                thread.stopThread();
+            }
+        }
+    }
+
+    /**
+     * This method is used to terminate all the execution of the thread pool.
+     */
+    public void stopAll() {
         this.isStop = true;
         for (PoolThread thread : this.threadPool) {
             thread.stopThread();

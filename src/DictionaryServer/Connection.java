@@ -8,6 +8,7 @@ import DictionaryServer.Services.ServiceNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -20,15 +21,13 @@ public class Connection implements Runnable {
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
 
-    private long id;
 
 
-    public Connection(Socket socket, long id) throws IOException {
+    public Connection(Socket socket) throws IOException {
         this.socket = socket;
         this.serviceFactory = ServiceFactory.getServiceFactory();
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
-        this.id = id;
     }
 
 
@@ -60,8 +59,8 @@ public class Connection implements Runnable {
 
     }
 
-    public long getId() {
-        return id;
+    public InetAddress getIP() {
+        return this.socket.getInetAddress();
     }
 
 }

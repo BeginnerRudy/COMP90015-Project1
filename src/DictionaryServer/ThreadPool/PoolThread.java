@@ -7,6 +7,7 @@ package DictionaryServer.ThreadPool;
 
 import DictionaryServer.DictionaryServer;
 import DictionaryServer.ServerController;
+import DictionaryServer.Connection;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -27,10 +28,10 @@ public class PoolThread extends Thread {
     public void run() {
         while (!this.isStop) {
             try {
-                Runnable task = (Runnable) taskQueue.take();
-                ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Running");
+                Connection connection = (Connection) taskQueue.take();
+                ServerController.getServerController().changeThreadStateOnGUI(this.getId(), connection.getIP().toString());
                 DictionaryServer.printServerMsg("Thread processing new task!");
-                task.run();
+                connection.run();
                 DictionaryServer.printServerMsg("finished");
                 ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Idle");
             } catch (InterruptedException e) {
@@ -44,6 +45,7 @@ public class PoolThread extends Thread {
      */
     public void stopThread() {
         this.isStop = true;
+        ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "stopped");
         this.interrupt();
     }
 

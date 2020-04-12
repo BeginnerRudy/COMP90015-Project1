@@ -72,7 +72,8 @@ public class ServerGUI extends JFrame {
         killThreadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                serverController.killConnection();
+                Thread thread = new Thread();
+                serverController.killThreads();
             }
         });
     }

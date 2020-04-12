@@ -54,7 +54,13 @@ public class ServerController {
     }
 
 
-    public synchronized void killConnection(){
+    public synchronized void killThreads(){
+        int row = this.serverGUI.getTable1().getSelectedRow();
+        String s = (String) this.serverGUI.getTable1().getValueAt(row, 0);
+        long id = Integer.parseInt(s.split(" ")[1]);
+
+        this.server.getThreadPool().stop(id);
+        System.out.println(id);
     }
 
     /**
