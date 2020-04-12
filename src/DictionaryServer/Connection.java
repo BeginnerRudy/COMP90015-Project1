@@ -57,6 +57,9 @@ public class Connection implements Runnable {
             e.printStackTrace();
             System.out.println("Connection class IO exception in run method");
         }
+
+        // TODO remove connection from GUI
+        ServerController.getServerController().removeConnectionFromGUI(this);
     }
 
 }

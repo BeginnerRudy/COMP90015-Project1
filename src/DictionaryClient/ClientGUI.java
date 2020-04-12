@@ -42,6 +42,8 @@ public class ClientGUI extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
 
+
+
         setAddButtonLogic();
         setDeleteButtonLogic();
         setSearchButtonLogic();

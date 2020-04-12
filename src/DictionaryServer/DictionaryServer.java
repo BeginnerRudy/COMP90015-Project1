@@ -65,6 +65,8 @@ public class DictionaryServer {
             while (true) {
                 Socket socket = serverSocket.accept();
                 Connection connection = new Connection(socket);
+                // TODO add connection to server GUI
+                ServerController.getServerController().addNewConnectionToGUI(connection);
                 threadPool.execute(connection);
             }
         } catch (SocketException e) {
@@ -97,8 +99,8 @@ public class DictionaryServer {
 
         // create a server
         DictionaryServer server = new DictionaryServer(port, dictionaryFilePath);
-        ServerController serverController = ServerController.getServerController()
-        ServerGUI serverGUI = new ServerGUI("Dictionary Server", serverController);
+        ServerController serverController = ServerController.getServerController();
+        ServerGUI serverGUI = new ServerGUI("Dictionary Server");
         serverController.init(server, serverGUI);
         serverGUI.setVisible(true);
 
