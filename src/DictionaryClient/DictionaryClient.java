@@ -33,6 +33,7 @@ public class DictionaryClient {
     private Socket socket;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
+    private ReadingThread readingThread;
 
     public DictionaryClient(String address, int port) {
         this.address = address;
@@ -40,13 +41,17 @@ public class DictionaryClient {
 
 
         try {
-            connectToServer();
+            this.connectToServer();
+            ClientController.getClientController().setGUISystemMsg("Connected ");
         } catch (UnknownHostException e) {
             System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
             e.printStackTrace();
+
         } catch (ConnectException e) {
             System.out.println("Failed to connect to the server: " + e.getMessage());
             e.printStackTrace();
+            ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
+
         } catch (IOException e) {
             System.out.println("Failed to add a word to the server");
             e.printStackTrace();
@@ -60,8 +65,12 @@ public class DictionaryClient {
      */
     private void connectToServer() throws IOException {
         this.socket = new Socket(this.address, this.port);
+        this.socket.setSoTimeout(3000);
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
+        this.readingThread = new ReadingThread(this.reader);
+        this.readingThread.start();
+        ClientController.getClientController().setGUISystemMsg("Connected ");
     }
 
     private void reconnectToWrite(JSONObject request) throws IOException {
@@ -69,21 +78,20 @@ public class DictionaryClient {
         try {
             this.writer.writeObject(request);
         } catch (IOException e) {
+            System.out.println("reconnect to server.");
+            ClientController.getClientController().setGUISystemMsg("Reconnecting ... ");
             this.connectToServer();
             this.writer.writeObject(request);
-        }
-    }
-
-
-    private JSONObject reconnectToRead() throws IOException, ClassNotFoundException {
-        // send request to the server, reconnect if necessary
-        try {
-            return (JSONObject) this.reader.readObject();
-        } catch (IOException e) {
+        } catch (NullPointerException e){
+            // when the client failed to connect for the first time, then writer would be null
+            System.out.println("reconnect to server.");
+            ClientController.getClientController().setGUISystemMsg("Reconnecting ... ");
             this.connectToServer();
-            return (JSONObject) this.reader.readObject();
+            this.writer.writeObject(request);
+
         }
     }
+
 
     /**
      * This method aims to close all the IO stuff's safely.
@@ -113,7 +121,7 @@ public class DictionaryClient {
      * <p>
      * This method handles the add function both the success and failure cases.
      */
-    public JSONObject add(String word, String meaning) {
+    public void add(String word, String meaning) {
         // If the input is not valid, notify the user this error.
         if (word.strip() != "" && meaning.strip() != "") {
 
@@ -126,10 +134,6 @@ public class DictionaryClient {
 
                 // send request to the server, reconnect if necessary
                 reconnectToWrite(add_request);
-
-                // TODO socket exception: connection rest
-                JSONObject reply = reconnectToRead();
-                return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
                 System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
@@ -138,29 +142,19 @@ public class DictionaryClient {
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
                 e.printStackTrace();
-                return reply;
             } catch (ConnectException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
                 e.printStackTrace();
-                return reply;
+                System.out.println();
             } catch (IOException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to add a word to the server");
                 e.printStackTrace();
-                return reply;
-            } catch (ClassNotFoundException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
-                e.printStackTrace();
-                return reply;
-
             }
 
         }
@@ -169,7 +163,6 @@ public class DictionaryClient {
         JSONObject reply = new JSONObject();
         reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
         reply.put(RESPONSE_MESSAGE_KEY, "Please enter both word and meaning.");
-        return reply;
     }
 
 
@@ -179,7 +172,7 @@ public class DictionaryClient {
      * <p>
      * This method handles the delete function both the success and failure cases.
      */
-    public JSONObject delete(String word) {
+    public void delete(String word) {
         if (word.strip() != "") {
             try {
                 JSONObject delete_request = new JSONObject();
@@ -188,8 +181,6 @@ public class DictionaryClient {
                 delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
                 // send request to the server, reconnect if necessary
                 reconnectToWrite(delete_request);
-                JSONObject reply = reconnectToRead();
-                return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
                 System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
@@ -198,35 +189,23 @@ public class DictionaryClient {
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
                 e.printStackTrace();
-                return reply;
             } catch (ConnectException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
                 e.printStackTrace();
-                return reply;
             } catch (IOException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to delete a word from the server, due to client IO side exception");
-                return reply;
-            } catch (ClassNotFoundException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
-                e.printStackTrace();
-                return reply;
-
             }
         }
         // construct the failure reply
         JSONObject reply = new JSONObject();
         reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
         reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
-        return reply;
     }
 
     /**
@@ -235,7 +214,7 @@ public class DictionaryClient {
      * <p>
      * This method handles the search function both the success and failure cases.
      */
-    public JSONObject search(String word) {
+    public void search(String word) {
         if (!word.strip().equals("")) {
             try {
                 JSONObject search_request = new JSONObject();
@@ -245,43 +224,32 @@ public class DictionaryClient {
 
                 // send request to the server
                 reconnectToWrite(search_request);
-                JSONObject reply = reconnectToRead();
-                return reply;
                 // handle failure cases on the client side
             } catch (UnknownHostException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-                return reply;
             } catch (ConnectException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
-                return reply;
+                e.printStackTrace();
+                System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage());
+                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
             } catch (IOException e) {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to search a word from the server due to client side IO exception");
                 e.printStackTrace();
-                return reply;
-            } catch (ClassNotFoundException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "ClassException error.");
-                e.printStackTrace();
-                return reply;
-
             }
         }
         // construct the failure reply
         JSONObject reply = new JSONObject();
         reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
         reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
-        return reply;
 
     }
 
@@ -291,10 +259,11 @@ public class DictionaryClient {
      *             This is the main method of the Dictionary client, controls the execution flow of the client.
      */
     public static void main(String[] args) {
-        DictionaryClient client = new DictionaryClient("localhost", 5000);
-        ClientController clientController = new ClientController(client);
-        ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client", clientController);
+        ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
         clientGUI.setVisible(true);
+        ClientController clientController = ClientController.getClientController();
         clientController.setClientGUI(clientGUI);
+        DictionaryClient client = new DictionaryClient("localhost", 5000);
+        clientController.setDictionaryClient(client);
     }
 }

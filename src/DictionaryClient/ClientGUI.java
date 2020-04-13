@@ -28,20 +28,23 @@ public class ClientGUI extends JFrame {
     private JLabel statusConnectivityLabel;
     private JTextArea serverResponse;
     private JButton disconnectButton;
-    private ClientController clientController;
+
+    public JLabel getConnectivity() {
+        return connectivity;
+    }
+
+    private JLabel connectivity;
 
     String patternString = "[A-Za-z0-9 _.,!\"'/$]*";
     Pattern pattern = Pattern.compile(patternString);
 
 
-    public ClientGUI(String appName, ClientController clientController) {
+    public ClientGUI(String appName) {
         super(appName);
-        this.clientController = clientController;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
-
 
 
         setAddButtonLogic();
@@ -67,7 +70,7 @@ public class ClientGUI extends JFrame {
                     serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
 
                 } else {
-                    clientController.add(word, meaning);
+                    ClientController.getClientController().add(word, meaning);
                 }
             }
         });
@@ -80,7 +83,7 @@ public class ClientGUI extends JFrame {
         disconnectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clientController.disconnect();
+                ClientController.getClientController().disconnect();
             }
         });
     }
@@ -99,7 +102,7 @@ public class ClientGUI extends JFrame {
                     serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
 
                 } else {
-                    clientController.delete(word);
+                    ClientController.getClientController().delete(word);
                 }
             }
         });
@@ -119,7 +122,7 @@ public class ClientGUI extends JFrame {
                     serverResponse.setText("The input is not valid, contains invalid chars. The valid pattern is \"[A-Za-z0-9 _.,!\\\"'/$]*\"");
 
                 } else {
-                    clientController.search(word);
+                    ClientController.getClientController().search(word);
                 }
             }
         });
@@ -152,7 +155,7 @@ public class ClientGUI extends JFrame {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(15, 17, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(16, 17, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.setAutoscrolls(false);
         mainPanel.setPreferredSize(new Dimension(492, 458));
         mainPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -202,6 +205,9 @@ public class ClientGUI extends JFrame {
         disconnectButton = new JButton();
         disconnectButton.setText("Disconnect");
         mainPanel.add(disconnectButton, new com.intellij.uiDesigner.core.GridConstraints(13, 9, 1, 8, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        connectivity = new JLabel();
+        connectivity.setText("Label");
+        mainPanel.add(connectivity, new com.intellij.uiDesigner.core.GridConstraints(15, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

@@ -15,18 +15,47 @@ import java.awt.*;
  * to appropriate server component as well as update the GUI with respect to the server.
  */
 public class ClientController {
+    private static ClientController clientController = new ClientController();
+
+    public static ClientController getClientController() {
+        return clientController;
+    }
+
     DictionaryClient dictionaryClient;
 
     ClientGUI clientGUI;
 
 
-    public ClientController(DictionaryClient dictionaryClient) {
-        this.dictionaryClient = dictionaryClient;
-    }
-
     public void setClientGUI(ClientGUI clientGUI) {
         this.clientGUI = clientGUI;
     }
+
+    public void setDictionaryClient(DictionaryClient dictionaryClient) {
+        this.dictionaryClient = dictionaryClient;
+    }
+
+
+    public void updateUI(JSONObject reply){
+        String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
+        if (responseCode.equals(DictionaryClient.SUCCESS_SEARCH)) {
+            String meaning = (String) reply.get(DictionaryClient.MEANING_KEY);
+            clientGUI.getClientOutputTextArea().setText(meaning);
+            clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
+            clientGUI.getServerResponse().setText("Successfully searched, meaning is as shown above.");
+
+        } else if (responseCode.equals(DictionaryClient.SUCCESS_ADD) || responseCode.equals(DictionaryClient.SUCCESS_DELETE) ) {
+            String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
+            clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
+            clientGUI.getServerResponse().setText(message);
+
+        } else if (responseCode.equals(DictionaryClient.FAILURE_CODE)) {
+            String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
+            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+            clientGUI.getServerResponse().setText(message);
+
+        }
+    }
+
 
     /**
      * @param word    The word to add
@@ -35,8 +64,7 @@ public class ClientController {
      *                This method is responsible for handing the add button message from the GUI
      */
     public void add(String word, String meaning) {
-        JSONObject reply = this.dictionaryClient.add(word, meaning);
-        updateViewForAddAndDelete(reply, DictionaryClient.SUCCESS_ADD);
+        this.dictionaryClient.add(word, meaning);
 
     }
 
@@ -46,9 +74,7 @@ public class ClientController {
      *             This method is responsible for handing the delete button message from the GUI
      */
     public void delete(String word) {
-        JSONObject reply = this.dictionaryClient.delete(word);
-
-        updateViewForAddAndDelete(reply, DictionaryClient.SUCCESS_DELETE);
+        this.dictionaryClient.delete(word);
     }
 
     /**
@@ -80,21 +106,7 @@ public class ClientController {
      *             This method is responsible for handing the search button message from the GUI
      */
     public void search(String word) {
-        JSONObject reply = this.dictionaryClient.search(word);
-        String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
-        if (responseCode.equals(DictionaryClient.SUCCESS_SEARCH)) {
-            String meaning = (String) reply.get(DictionaryClient.MEANING_KEY);
-            clientGUI.getClientOutputTextArea().setText(meaning);
-            clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
-            clientGUI.getServerResponse().setText("Successfully searched, meaning is as shown above.");
-
-        } else if (responseCode.equals(DictionaryClient.FAILURE_CODE)) {
-            String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
-            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
-            clientGUI.getServerResponse().setText(message);
-
-        }
-
+        this.dictionaryClient.search(word);
     }
 
 
@@ -105,4 +117,8 @@ public class ClientController {
         dictionaryClient.disconnect();
     }
 
+
+    public void setGUISystemMsg(String msg){
+        this.clientGUI.getConnectivity().setText(msg);
+    }
 }
