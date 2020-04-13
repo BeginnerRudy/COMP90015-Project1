@@ -54,7 +54,6 @@ public class DictionaryClient {
      */
     private void connectToServer() throws IOException {
         this.socket = new Socket(this.address, this.port);
-        this.socket.setSoTimeout(3000);
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
         this.readingThread = new ReadingThread(this.reader);
