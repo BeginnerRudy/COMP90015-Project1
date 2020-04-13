@@ -35,7 +35,7 @@ public class ClientController {
     }
 
 
-    public void updateUI(JSONObject reply){
+    public void updateUI(JSONObject reply) {
         String responseCode = (String) reply.get(DictionaryClient.RESPONSE_CODE_KEY);
         if (responseCode.equals(DictionaryClient.SUCCESS_SEARCH)) {
             String meaning = (String) reply.get(DictionaryClient.MEANING_KEY);
@@ -43,7 +43,7 @@ public class ClientController {
             clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
             clientGUI.getServerResponse().setText("Successfully searched, meaning is as shown above.");
 
-        } else if (responseCode.equals(DictionaryClient.SUCCESS_ADD) || responseCode.equals(DictionaryClient.SUCCESS_DELETE) ) {
+        } else if (responseCode.equals(DictionaryClient.SUCCESS_ADD) || responseCode.equals(DictionaryClient.SUCCESS_DELETE)) {
             String message = (String) reply.get(DictionaryClient.RESPONSE_MESSAGE_KEY);
             clientGUI.getServerResponse().setForeground(new Color(0, 125, 0));
             clientGUI.getServerResponse().setText(message);
@@ -64,7 +64,13 @@ public class ClientController {
      *                This method is responsible for handing the add button message from the GUI
      */
     public void add(String word, String meaning) {
-        this.dictionaryClient.add(word, meaning);
+        if (word.strip() != "" && meaning.strip() != "") {
+
+            this.dictionaryClient.add(word, meaning);
+        } else {
+            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+            this.clientGUI.getServerResponse().setText("Please enter both word and meaning.");
+        }
 
     }
 
@@ -74,8 +80,14 @@ public class ClientController {
      *             This method is responsible for handing the delete button message from the GUI
      */
     public void delete(String word) {
-        this.dictionaryClient.delete(word);
+        if (word.strip() != "") {
+            this.dictionaryClient.delete(word);
+        } else {
+            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+            this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+        }
     }
+
 
     /**
      * @param reply The reply from the dictionary client
@@ -106,9 +118,13 @@ public class ClientController {
      *             This method is responsible for handing the search button message from the GUI
      */
     public void search(String word) {
-        this.dictionaryClient.search(word);
+        if (word.strip() != "") {
+            this.dictionaryClient.search(word);
+        } else {
+            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+            this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+        }
     }
-
 
     /**
      * This method is responsible for disconnect the client and the server
@@ -118,7 +134,7 @@ public class ClientController {
     }
 
 
-    public void setGUISystemMsg(String msg){
+    public void setGUISystemMsg(String msg) {
         this.clientGUI.getConnectivity().setText(msg);
     }
 }

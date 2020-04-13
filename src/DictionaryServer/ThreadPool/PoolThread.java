@@ -52,7 +52,10 @@ public class PoolThread extends Thread {
         ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "interrupted");
         this.interrupt();
         try {
-            this.connection.getSocket().close();
+            if (connection != null) {
+
+                this.connection.getSocket().close();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

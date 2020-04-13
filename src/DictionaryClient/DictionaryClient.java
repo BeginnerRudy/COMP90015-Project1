@@ -106,11 +106,14 @@ public class DictionaryClient {
                 System.out.println("The connection is closed now.");
             } else {
                 System.out.println("Nothing to close, the client and server are disconnect.");
+                ClientController.getClientController().setGUISystemMsg("NOTHING TO DISCONNECT.");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Teardown error");
+        } catch (NullPointerException e){
+            ClientController.getClientController().setGUISystemMsg("NOTHING TO DISCONNECT.");
         }
     }
 
@@ -146,7 +149,8 @@ public class DictionaryClient {
                 // construct the failure reply
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
+                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
+                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
                 e.printStackTrace();
                 System.out.println();
             } catch (IOException e) {
@@ -194,6 +198,7 @@ public class DictionaryClient {
                 JSONObject reply = new JSONObject();
                 reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
                 reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
+                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
                 e.printStackTrace();
             } catch (IOException e) {
                 // construct the failure reply
