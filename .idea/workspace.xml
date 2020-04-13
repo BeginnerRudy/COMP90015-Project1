@@ -9,12 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Multithreaded Dictionary Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Multithreaded Dictionary Server.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +75,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo">
+  <component name="RunManager" selected="Application.DictionaryServer">
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
       <module name="Multithreaded Dictionary Server" />
@@ -154,8 +151,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.DictionaryServer" />
+        <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.Demo" />
         <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.ClientGUI" />

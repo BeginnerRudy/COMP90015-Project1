@@ -34,13 +34,13 @@ public class ReadingThread extends Thread {
             reply.put(DictionaryClient.RESPONSE_CODE_KEY, DictionaryClient.FAILURE_CODE);
             reply.put(DictionaryClient.RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
             e.printStackTrace();
-            ClientController.getClientController().setGUISystemMsg("Disconnected.");
+            ClientController.getClientController().setGUIConnectivity("Disconnected.");
         } catch (IOException e) {
             // construct the failure reply
             JSONObject reply = new JSONObject();
             reply.put(DictionaryClient.RESPONSE_CODE_KEY, DictionaryClient.FAILURE_CODE);
             reply.put(DictionaryClient.RESPONSE_MESSAGE_KEY, "Failed to add a word to the server");
-            ClientController.getClientController().setGUISystemMsg("Disconnected.");
+            ClientController.getClientController().setGUIConnectivity("Disconnected.");
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

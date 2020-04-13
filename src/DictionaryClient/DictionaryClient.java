@@ -39,22 +39,11 @@ public class DictionaryClient {
         this.address = address;
         this.port = port;
 
-
         try {
             this.connectToServer();
-            ClientController.getClientController().setGUISystemMsg("Connected ");
-        } catch (UnknownHostException e) {
-            System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            e.printStackTrace();
-
-        } catch (ConnectException e) {
-            System.out.println("Failed to connect to the server: " + e.getMessage());
-            e.printStackTrace();
-            ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
-
+            ClientController.getClientController().setGUIConnectivity("Connected ");
         } catch (IOException e) {
-            System.out.println("Failed to add a word to the server");
-            e.printStackTrace();
+            IOExceptionHandler(e);
         }
     }
 
@@ -70,7 +59,7 @@ public class DictionaryClient {
         this.reader = new ObjectInputStream(this.socket.getInputStream());
         this.readingThread = new ReadingThread(this.reader);
         this.readingThread.start();
-        ClientController.getClientController().setGUISystemMsg("Connected ");
+        ClientController.getClientController().setGUIConnectivity("Connected ");
     }
 
     private void reconnectToWrite(JSONObject request) throws IOException {
@@ -79,16 +68,15 @@ public class DictionaryClient {
             this.writer.writeObject(request);
         } catch (IOException e) {
             System.out.println("reconnect to server.");
-            ClientController.getClientController().setGUISystemMsg("Reconnecting ... ");
+            ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
             this.connectToServer();
             this.writer.writeObject(request);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             // when the client failed to connect for the first time, then writer would be null
             System.out.println("reconnect to server.");
-            ClientController.getClientController().setGUISystemMsg("Reconnecting ... ");
+            ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
             this.connectToServer();
             this.writer.writeObject(request);
-
         }
     }
 
@@ -106,17 +94,25 @@ public class DictionaryClient {
                 System.out.println("The connection is closed now.");
             } else {
                 System.out.println("Nothing to close, the client and server are disconnect.");
-                ClientController.getClientController().setGUISystemMsg("NOTHING TO DISCONNECT.");
+                ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Teardown error");
-        } catch (NullPointerException e){
-            ClientController.getClientController().setGUISystemMsg("NOTHING TO DISCONNECT.");
+        } catch (NullPointerException e) {
+            ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
         }
     }
 
+    private void sendRequest(JSONObject request) {
+        try {
+            // send request to the server, reconnect if necessary
+            reconnectToWrite(request);
+        } catch (IOException e) {
+            IOExceptionHandler(e);
+        }
+    }
 
     /**
      * @param word The word to be added.
@@ -125,48 +121,12 @@ public class DictionaryClient {
      * This method handles the add function both the success and failure cases.
      */
     public void add(String word, String meaning) {
-        // If the input is not valid, notify the user this error.
-        if (word.strip() != "" && meaning.strip() != "") {
-
-            try {
-                JSONObject add_request = new JSONObject();
-                // construct the add request
-                add_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
-                add_request.put(MEANING_KEY, meaning);
-                add_request.put(REQUEST_HEADER, ADD_METHOD);
-
-                // send request to the server, reconnect if necessary
-                reconnectToWrite(add_request);
-                // handle failure cases on the client side
-            } catch (UnknownHostException e) {
-                System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
-                e.printStackTrace();
-            } catch (ConnectException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
-                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
-                e.printStackTrace();
-                System.out.println();
-            } catch (IOException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to add a word to the server");
-                e.printStackTrace();
-            }
-
-        }
-
-        // construct the failure reply
-        JSONObject reply = new JSONObject();
-        reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-        reply.put(RESPONSE_MESSAGE_KEY, "Please enter both word and meaning.");
+        JSONObject add_request = new JSONObject();
+        // construct the add request
+        add_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
+        add_request.put(MEANING_KEY, meaning);
+        add_request.put(REQUEST_HEADER, ADD_METHOD);
+        this.sendRequest(add_request);
     }
 
 
@@ -177,40 +137,12 @@ public class DictionaryClient {
      * This method handles the delete function both the success and failure cases.
      */
     public void delete(String word) {
-        if (word.strip() != "") {
-            try {
-                JSONObject delete_request = new JSONObject();
-                // construct the add request
-                delete_request.put(REQUEST_HEADER, DELETE_METHOD);
-                delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
-                // send request to the server, reconnect if necessary
-                reconnectToWrite(delete_request);
-                // handle failure cases on the client side
-            } catch (UnknownHostException e) {
-                System.out.println(FAILURE_CODE + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
-                e.printStackTrace();
-            } catch (ConnectException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
-                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
-                e.printStackTrace();
-            } catch (IOException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to delete a word from the server, due to client IO side exception");
-            }
-        }
-        // construct the failure reply
-        JSONObject reply = new JSONObject();
-        reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-        reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
+        JSONObject delete_request = new JSONObject();
+        // construct the add request
+        delete_request.put(REQUEST_HEADER, DELETE_METHOD);
+        delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
+        // send request to the server, reconnect if necessary
+        this.sendRequest(delete_request);
     }
 
     /**
@@ -220,42 +152,31 @@ public class DictionaryClient {
      * This method handles the search function both the success and failure cases.
      */
     public void search(String word) {
-        if (!word.strip().equals("")) {
-            try {
-                JSONObject search_request = new JSONObject();
-                // construct the add request
-                search_request.put(REQUEST_HEADER, SEARCH_METHOD);
-                search_request.put(WORD_KEY, word.toLowerCase());// lower casing the word, for better match
+        JSONObject search_request = new JSONObject();
+        // construct the add request
+        search_request.put(REQUEST_HEADER, SEARCH_METHOD);
+        search_request.put(WORD_KEY, word.toLowerCase());// lower casing the word, for better match
+        // send request to the server
+        this.sendRequest(search_request);
+    }
 
-                // send request to the server
-                reconnectToWrite(search_request);
-                // handle failure cases on the client side
-            } catch (UnknownHostException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            } catch (ConnectException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
-                e.printStackTrace();
-                System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage());
-                ClientController.getClientController().setGUISystemMsg("Server is unavailable now, try later.");
-            } catch (IOException e) {
-                // construct the failure reply
-                JSONObject reply = new JSONObject();
-                reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-                reply.put(RESPONSE_MESSAGE_KEY, "Failed to search a word from the server due to client side IO exception");
-                e.printStackTrace();
-            }
+    /**
+     * This method is resonsible for handling the IOException.
+     * @param e The IOException object
+     */
+    private void IOExceptionHandler(IOException e) {
+        if (e instanceof UnknownHostException) {
+            // construct the failure reply
+            System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
+            ClientController.getClientController().setGUIConnectivity("Server addr is unknown.");
+        } else if (e instanceof ConnectException) {
+            System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage());
+            ClientController.getClientController().setGUIConnectivity("Server is unavailable now, try later.");
+        } else {
+            // construct the failure reply
+            System.out.println("Client side IO exception");
+            ClientController.getClientController().setGUIConnectivity("Client side IO exception");
         }
-        // construct the failure reply
-        JSONObject reply = new JSONObject();
-        reply.put(RESPONSE_CODE_KEY, FAILURE_CODE);
-        reply.put(RESPONSE_MESSAGE_KEY, "Please enter non-empty word");
-
     }
 
 
