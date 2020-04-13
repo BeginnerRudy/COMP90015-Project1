@@ -9,6 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -148,8 +151,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.DictionaryServer" />
+        <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.Demo" />
         <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.ClientGUI" />
@@ -190,7 +193,7 @@
       <workItem from="1586748975801" duration="54000" />
       <workItem from="1586749169380" duration="2724000" />
       <workItem from="1586763168476" duration="876000" />
-      <workItem from="1586818601098" duration="738000" />
+      <workItem from="1586818601098" duration="2320000" />
     </task>
     <servers />
   </component>

@@ -4,6 +4,7 @@ import DictionaryServer.Services.InactiveServiceException;
 import DictionaryServer.Services.Service;
 import DictionaryServer.Services.ServiceFactory;
 import DictionaryServer.Services.ServiceNotFoundException;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,6 +29,9 @@ public class Connection implements Runnable {
         this.serviceFactory = ServiceFactory.getServiceFactory();
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
+        JSONObject rep = new JSONObject();
+        rep.put(ServiceFactory.RESPONSE_CODE_KEY, "Connected and Queued");
+        this.writer.writeObject(rep);
     }
 
 
@@ -36,6 +40,9 @@ public class Connection implements Runnable {
         try {
             // TODO set time out marcos
             socket.setSoTimeout(5000);
+            JSONObject rep = new JSONObject();
+            rep.put(ServiceFactory.RESPONSE_CODE_KEY, "Connected and serving.");
+            this.writer.writeObject(rep);
             while (true) {
                 Service service = serviceFactory.getService(this.socket, writer, reader);
                 service.run();

@@ -71,6 +71,8 @@ public class ClientController {
             clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
             clientGUI.getServerResponse().setText(message);
 
+        } else{
+            clientGUI.getConnectivity().setText((String) reply.get(DictionaryClient.RESPONSE_CODE_KEY));
         }
     }
 
