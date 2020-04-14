@@ -21,8 +21,6 @@ public class ClientController {
         return clientController;
     }
 
-    DictionaryClient dictionaryClient;
-
     ClientGUI clientGUI;
 
 
@@ -35,14 +33,6 @@ public class ClientController {
         this.clientGUI = clientGUI;
     }
 
-    /**
-     * This is the setter for dictionaryClient attribute
-     *
-     * @param dictionaryClient The ClientGUI the controller needs to control.
-     */
-    public void setDictionaryClient(DictionaryClient dictionaryClient) {
-        this.dictionaryClient = dictionaryClient;
-    }
 
 
     /**
@@ -85,8 +75,7 @@ public class ClientController {
      */
     public void add(String word, String meaning) {
         if (word.strip() != "" && meaning.strip() != "") {
-
-            this.dictionaryClient.add(word, meaning);
+            DictionaryClient.getClient().add(word, meaning);
         } else {
             clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
             this.clientGUI.getServerResponse().setText("Please enter both word and meaning.");
@@ -101,7 +90,7 @@ public class ClientController {
      */
     public void delete(String word) {
         if (word.strip() != "") {
-            this.dictionaryClient.delete(word);
+            DictionaryClient.getClient().delete(word);
         } else {
             clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
             this.clientGUI.getServerResponse().setText("Please enter non-empty word");
@@ -115,7 +104,7 @@ public class ClientController {
      */
     public void search(String word) {
         if (word.strip() != "") {
-            this.dictionaryClient.search(word);
+            DictionaryClient.getClient().search(word);
         } else {
             clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
             this.clientGUI.getServerResponse().setText("Please enter non-empty word");
@@ -126,7 +115,7 @@ public class ClientController {
      * This method is responsible for disconnect the client and the server
      */
     public void disconnect() {
-        dictionaryClient.disconnect();
+        DictionaryClient.getClient().disconnect();
     }
 
 

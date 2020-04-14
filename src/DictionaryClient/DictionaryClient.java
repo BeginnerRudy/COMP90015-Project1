@@ -15,6 +15,8 @@ import java.net.*;
  * This class is responsible for all the functionality that a dictionary client should handle.
  */
 public class DictionaryClient {
+    private static DictionaryClient client = new DictionaryClient();
+
     // Below are message exchange protocol's constant, which is agreed with the server side.
     public static final String ADD_METHOD = "A";
     public static final String DELETE_METHOD = "D";
@@ -36,7 +38,11 @@ public class DictionaryClient {
     private ObjectInputStream reader;
     private ReadingThread readingThread;
 
-    public DictionaryClient(String address, int port) {
+    public static DictionaryClient getClient(){
+        return DictionaryClient.client;
+    }
+
+    public void init(String address, int port) {
         this.address = address;
         this.port = port;
 
@@ -199,16 +205,15 @@ public class DictionaryClient {
         try {
             CommandLine cmd = parser.parse(options, args);
             // parse command line args
-
             String address = cmd.getOptionValue("address-path");
             int port = Integer.parseInt(cmd.getOptionValue("port"));
 
+            // setup the client
             ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
             clientGUI.setVisible(true);
             ClientController clientController = ClientController.getClientController();
             clientController.setClientGUI(clientGUI);
-            DictionaryClient client = new DictionaryClient(address, port);
-            clientController.setDictionaryClient(client);
+            DictionaryClient.getClient().init(address, port);
 
         } catch (ParseException e) {
             System.out.println("Client fail to start.");
