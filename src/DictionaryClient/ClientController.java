@@ -25,7 +25,7 @@ public class ClientController {
 
 
     /**
-     * This is the setter for clientGUI attribute
+     * This method initiates ClientController
      *
      * @param clientGUI The ClientGUI the controller needs to control.
      */

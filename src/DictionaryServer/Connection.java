@@ -25,11 +25,9 @@ public class Connection implements Runnable {
     private ServiceFactory serviceFactory;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
-    private int inactiveTimeout;
 
 
-    public Connection(Socket socket, int inactiveTimeout) throws IOException {
-        this.inactiveTimeout = inactiveTimeout * 1000;
+    public Connection(Socket socket) throws IOException {
         this.socket = socket;
         this.serviceFactory = ServiceFactory.getServiceFactory();
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
@@ -44,7 +42,7 @@ public class Connection implements Runnable {
     public void run() {
         try {
             // TODO set time out marcos
-            socket.setSoTimeout(inactiveTimeout);
+            socket.setSoTimeout(DictionaryServer.getServer().getInactiveTimeout());
             JSONObject rep = new JSONObject();
             rep.put(ServiceFactory.RESPONSE_CODE_KEY, "Connected and serving.");
             this.writer.writeObject(rep);

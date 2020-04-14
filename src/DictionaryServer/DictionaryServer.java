@@ -37,7 +37,7 @@ public class DictionaryServer {
         this.port = port;
         this.maxPoolSize = maxPoolSize;
         this.threadPool = new ThreadPool(this.maxPoolSize);
-        this.inactiveTimeout = inactiveTimeout;
+        this.inactiveTimeout = inactiveTimeout * 1000;
 
 
         // Initialize the dictionary by read file from disk
@@ -89,7 +89,7 @@ public class DictionaryServer {
             serverSocket = new ServerSocket(this.port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                Connection connection = new Connection(socket, this.inactiveTimeout);
+                Connection connection = new Connection(socket);
                 threadPool.execute(connection);
             }
         } catch (SocketException e) {

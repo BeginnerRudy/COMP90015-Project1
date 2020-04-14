@@ -7,6 +7,9 @@ import java.io.ObjectInputStream;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 
+/**
+ * This thread is responsible for continually reading input from the server.
+ */
 public class ReadingThread extends Thread {
     private ObjectInputStream reader;
 
@@ -21,7 +24,9 @@ public class ReadingThread extends Thread {
         try {
             this.connected = true;
             while (true) {
+                // read from the server
                 JSONObject reply = (JSONObject) reader.readObject();
+                // ask the controller to update UI
                 ClientController.getClientController().updateUI(reply);
             }
         } catch (UnknownHostException e) {
@@ -55,6 +60,11 @@ public class ReadingThread extends Thread {
         this.connected = false;
     }
 
+    /**
+     * This methods returns whether the reading channel is connected.
+     *
+     * @return isConnected
+     */
     public synchronized boolean isConnected() {
         return connected;
     }

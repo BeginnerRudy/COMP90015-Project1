@@ -62,7 +62,8 @@ public class Dictionary {
      */
     public void saveToDisk(String dictionaryFilePath) {
         //Write JSON file
-        try (FileWriter file = new FileWriter(dictionaryFilePath)) {
+        try{
+            FileWriter file = new FileWriter(dictionaryFilePath);
             file.write(((JSONObject) this.getHashmap()).toJSONString());
             file.flush();
             Utility.printServerMsg("Dictionary", "Dictionary saved to the disk.");

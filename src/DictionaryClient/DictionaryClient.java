@@ -8,11 +8,9 @@ package DictionaryClient;
 import org.apache.commons.cli.*;
 import org.json.simple.JSONObject;
 
-import java.io.*;
-import java.net.*;
-
 /**
  * This class is responsible for all the functionality that a dictionary client should handle.
+ * This is a singleton class.
  */
 public class DictionaryClient {
     private static DictionaryClient client = new DictionaryClient();
@@ -31,96 +29,28 @@ public class DictionaryClient {
     public static final String RESPONSE_CODE_KEY = "response_code";
     public static final String RESPONSE_MESSAGE_KEY = "response_message";
 
-    private int port;
-    private String address;
-    private Socket socket;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
-    private ReadingThread readingThread;
+    private ClientConnection connection;
 
+    /**
+     * This is the singleton getter method.
+     *
+     * @return The singleton instance
+     */
     public static DictionaryClient getClient() {
         return DictionaryClient.client;
     }
 
+    /**
+     * @param address The server IP address
+     * @param port    The server port
+     */
     public void init(String address, int port) {
-        this.address = address;
-        this.port = port;
-
-        try {
-            this.connectToServer();
-            ClientController.getClientController().setGUIConnectivity("Connected ");
-        } catch (IOException e) {
-            IOExceptionHandler(e);
-        }
+        // connect to the server
+        this.connection = new ClientConnection(address, port);
     }
 
-    /**
-     * @throws IOException The IO exception.
-     *                     <p>
-     *                     This method aims to connect to a server by the address and port.
-     */
-    private void connectToServer() throws IOException {
-        this.socket = new Socket(this.address, this.port);
-        this.writer = new ObjectOutputStream(this.socket.getOutputStream());
-        this.reader = new ObjectInputStream(this.socket.getInputStream());
-        this.readingThread = new ReadingThread(this.reader);
-        this.readingThread.start();
-        ClientController.getClientController().setGUIConnectivity("Connected ");
-        Utility.printClientMsg("Connection", "connect to the server");
-    }
-
-    private void reconnectToWrite(JSONObject request) throws IOException {
-        // send request to the server, reconnect if necessary
-        try {
-            this.writer.writeObject(request);
-        } catch (IOException e) {
-            Utility.printClientMsg("Connection", "reconnect to server ...");
-            ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
-            this.connectToServer();
-            this.writer.writeObject(request);
-        } catch (NullPointerException e) {
-            // when the client failed to connect for the first time, then writer would be null
-            Utility.printClientMsg("Connection", "reconnect to server ...");
-            ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
-            this.connectToServer();
-            this.writer.writeObject(request);
-        }
-    }
-
-
-    /**
-     * This method aims to close all the IO stuff's safely.
-     */
-    public void disconnect() {
-        try {
-            if (this.readingThread.isConnected()) {
-
-                this.reader.close();
-                this.writer.close();
-                this.socket.close();
-                Utility.printClientMsg("Connection", "The connection is closed now.");
-            } else {
-                Utility.printClientMsg("Connection", "Nothing to close, the client and server are disconnect.");
-                ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
-            }
-
-        } catch (IOException e) {
-//            e.printStackTrace();
-            Utility.printClientMsg("Connection", "NOTHING TO DISCONNECT.");
-            System.out.println("Teardown error");
-        } catch (NullPointerException e) {
-            Utility.printClientMsg("Connection", "NOTHING TO DISCONNECT.");
-            ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
-        }
-    }
-
-    private void sendRequest(JSONObject request) {
-        try {
-            // send request to the server, reconnect if necessary
-            reconnectToWrite(request);
-        } catch (IOException e) {
-            IOExceptionHandler(e);
-        }
+    public void disconnect(){
+        this.connection.disconnect();
     }
 
     /**
@@ -135,7 +65,7 @@ public class DictionaryClient {
         add_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
         add_request.put(MEANING_KEY, meaning);
         add_request.put(REQUEST_HEADER, ADD_METHOD);
-        this.sendRequest(add_request);
+        this.connection.sendRequest(add_request);
     }
 
 
@@ -151,7 +81,7 @@ public class DictionaryClient {
         delete_request.put(REQUEST_HEADER, DELETE_METHOD);
         delete_request.put(WORD_KEY, word.toLowerCase()); // lower casing the word, for better match
         // send request to the server, reconnect if necessary
-        this.sendRequest(delete_request);
+        this.connection.sendRequest(delete_request);
     }
 
     /**
@@ -166,31 +96,7 @@ public class DictionaryClient {
         search_request.put(REQUEST_HEADER, SEARCH_METHOD);
         search_request.put(WORD_KEY, word.toLowerCase());// lower casing the word, for better match
         // send request to the server
-        this.sendRequest(search_request);
-    }
-
-    /**
-     * This method is resonsible for handling the IOException.
-     *
-     * @param e The IOException object
-     */
-    private void IOExceptionHandler(IOException e) {
-        if (e instanceof UnknownHostException) {
-            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            ClientController.getClientController().setGUIConnectivity("Server addr is unknown.");
-        } else if (e instanceof ConnectException) {
-            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
-            ClientController.getClientController().setGUIConnectivity("Server is unavailable now, try later.");
-        } else {
-            Utility.printClientMsg("Connection", "Client side IO exception");
-            ClientController.getClientController().setGUIConnectivity("Client side IO exception");
-        }
-    }
-
-    private static void addOption(Options options, String opt, String longOpt, Boolean hasArg, String description) {
-        Option input = new Option(opt, longOpt, hasArg, description);
-        input.setRequired(true);
-        options.addOption(input);
+        this.connection.sendRequest(search_request);
     }
 
     /**
@@ -198,16 +104,17 @@ public class DictionaryClient {
      *             This is the main method of the Dictionary client, controls the execution flow of the client.
      */
     public static void main(String[] args) {
+        //  setup command line
         Options options = new Options();
-        addOption(options, "a", "address", true, "Server address");
-        addOption(options, "p", "port", true, "Server port");
+        Utility.addOption(options, "a", "address", true, "Server address");
+        Utility.addOption(options, "p", "port", true, "Server port");
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         try {
             CommandLine cmd = parser.parse(options, args);
             // parse command line args
-            String address = cmd.getOptionValue("address-path");
+            String address = cmd.getOptionValue("address");
             int port = Integer.parseInt(cmd.getOptionValue("port"));
 
             // setup the client
@@ -217,10 +124,9 @@ public class DictionaryClient {
             DictionaryClient.getClient().init(address, port);
 
         } catch (ParseException e) {
-            System.out.println("Client fail to start.");
-            System.out.println(e.getMessage());
+            Utility.printClientMsg("Client", "Client fail to start.");
+            Utility.printClientMsg("Client", e.getMessage());
             formatter.printHelp("utility-name", options);
-
             System.exit(1);
         }
     }
