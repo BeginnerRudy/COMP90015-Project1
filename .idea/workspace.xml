@@ -8,7 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -194,7 +194,7 @@
       <workItem from="1586823209385" duration="721000" />
       <workItem from="1586824086045" duration="15212000" />
       <workItem from="1586845580301" duration="10528000" />
-      <workItem from="1586863727927" duration="231000" />
+      <workItem from="1586863727927" duration="986000" />
     </task>
     <servers />
   </component>

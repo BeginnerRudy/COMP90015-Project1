@@ -45,7 +45,14 @@ public class Connection implements Runnable {
                 Service service = serviceFactory.getService(this.socket, writer, reader);
                 service.run();
             }
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e){
+            handleExceptions(e);
+        }
+
+    }
+
+    private void handleExceptions(Exception e){
+        if (e instanceof SocketTimeoutException) {
 //            e.printStackTrace();
             try {
                 socket.close();
@@ -54,21 +61,20 @@ public class Connection implements Runnable {
                 Utility.printServerMsg("Connection", "IO exception (inactive timeout).");
             }
             Utility.printServerMsg("Connection", "Close connection due to inactive timeout.");
-        } catch (EOFException e) {
+        } else if (e instanceof EOFException) {
             Utility.printServerMsg("Connection", "The connection is closed by client.");
-        } catch (SocketException e) {
+        } else if (e instanceof SocketException) {
             Utility.printServerMsg("Connection", "The connection is closed by server.");
-        } catch (IOException e) {
+        } else if (e instanceof IOException) {
 //            e.printStackTrace();
             Utility.printServerMsg("Connection", "IO exception.");
-        } catch (ClassNotFoundException e) {
+        } else if (e instanceof ClassNotFoundException) {
 //            e.printStackTrace();
             Utility.printServerMsg("Casting error", "Fail to cast to JSONObject.");
-        } catch (ServiceNotFoundException e) {
+        } else if (e instanceof ServiceNotFoundException) {
 //            e.printStackTrace();
             Utility.printServerMsg("Service error", "Service not found.");
         }
-
     }
 
     /**
