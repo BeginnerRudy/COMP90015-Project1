@@ -7,8 +7,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
+/**
+ * This class is responsible for client side connection
+ */
 public class ClientConnection {
     private Socket socket;
     private ObjectOutputStream writer;
@@ -123,7 +127,10 @@ public class ClientConnection {
         } else if (e instanceof ConnectException) {
             Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
             ClientController.getClientController().setGUIConnectivity("Server is unavailable now, try later.");
-        } else {
+        } else if (e instanceof SocketException){
+            Utility.printClientMsg("Connection", "Network is unreachable (connect failed)");
+            ClientController.getClientController().setGUIConnectivity("Network is unreachable");
+        }else {
             Utility.printClientMsg("Connection", "Client side IO exception");
             ClientController.getClientController().setGUIConnectivity("Client side IO exception");
         }

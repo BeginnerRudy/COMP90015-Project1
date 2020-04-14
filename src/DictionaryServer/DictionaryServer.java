@@ -29,10 +29,23 @@ public class DictionaryServer {
 
     private int inactiveTimeout;
 
+    /**
+     * This is the singleton getter.
+     *
+     * @return The server
+     */
     public static DictionaryServer getServer() {
         return DictionaryServer.server;
     }
 
+    /**
+     * This methods initialize the attributes for server
+     *
+     * @param port The port that server runs on
+     * @param dictionaryFilePath The filepath of the dictionary file.
+     * @param maxPoolSize The maximum number of threads in a thread pool.
+     * @param inactiveTimeout The maximum inactive timeout that the client could have before disconnecting.
+     */
     public void init(int port, String dictionaryFilePath, int maxPoolSize, int inactiveTimeout) {
         this.port = port;
         this.maxPoolSize = maxPoolSize;
@@ -66,14 +79,23 @@ public class DictionaryServer {
         Utility.printServerMsg("Server", "Server closing ...");
     }
 
+    /**
+     * @return The thread pool
+     */
     public ThreadPool getThreadPool() {
         return threadPool;
     }
 
+    /**
+     * @return The maximum thread pool size;
+     */
     public int getMaxPoolSize() {
         return maxPoolSize;
     }
 
+    /**
+     * @return The inactive timeout setting.
+     */
     public int getInactiveTimeout() {
         return inactiveTimeout;
     }
@@ -100,11 +122,6 @@ public class DictionaryServer {
         }
     }
 
-    private static void addOption(Options options, String opt, String longOpt, Boolean hasArg, String description) {
-        Option input = new Option(opt, longOpt, hasArg, description);
-        input.setRequired(true);
-        options.addOption(input);
-    }
 
     /**
      * @param args The commandline args
@@ -113,10 +130,10 @@ public class DictionaryServer {
      */
     public static void main(String[] args) {
         Options options = new Options();
-        addOption(options, "f", "file-path", true, "Dictionary filepath");
-        addOption(options, "p", "port", true, "Server port");
-        addOption(options, "t", "inactive", true, "inactive timeout in seconds");
-        addOption(options, "s", "size", true, "max pool size");
+        Utility.addOption(options, "f", "file-path", true, "Dictionary filepath");
+        Utility.addOption(options, "p", "port", true, "Server port");
+        Utility.addOption(options, "t", "inactive", true, "inactive timeout in seconds");
+        Utility.addOption(options, "s", "size", true, "max pool size");
 
 
         CommandLineParser parser = new DefaultParser();

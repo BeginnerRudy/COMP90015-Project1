@@ -5,7 +5,6 @@
 
 package DictionaryServer.ThreadPool;
 
-import DictionaryServer.DictionaryServer;
 import DictionaryServer.ServerController;
 import DictionaryServer.Connection;
 import DictionaryServer.Utility;

@@ -7,6 +7,11 @@ import org.apache.commons.cli.Options;
  * This class provides tools for other classesgi
  */
 public class Utility {
+    /**
+     * This function provides a consistent way to print out client message to the stand output.
+     * @param header The client message header
+     * @param msg The client message body
+     */
     public static void printClientMsg(String header, String msg){
         System.out.println(header + ": " + msg);
     }

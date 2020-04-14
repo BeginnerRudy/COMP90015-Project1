@@ -5,8 +5,6 @@
 
 package DictionaryServer.ThreadPool;
 
-
-import DictionaryServer.ServerController;
 import DictionaryServer.Utility;
 
 import java.util.ArrayList;
@@ -66,6 +64,9 @@ public class ThreadPool {
         }
     }
 
+    /**
+     * @return The list of threads in the thread pool.
+     */
     public List<PoolThread> getThreads() {
         return threadPool;
     }
@@ -91,6 +92,9 @@ public class ThreadPool {
         }
     }
 
+    /**
+     * @return The number of running threads, i.e. the number of not stopped threads.
+     */
     public int getRunningThreadCount() {
         int count = 0;
         for (PoolThread thread : this.threadPool) {
@@ -102,6 +106,11 @@ public class ThreadPool {
         return count;
     }
 
+    /**
+     * This method would remove those stopped threads and return thread id of them as a list.
+     *
+     * @return A list of stopped thread ids
+     */
     public ArrayList<Long> clean() {
         ArrayList<Long> deadIds = new ArrayList();
         ArrayList<PoolThread> copy = new ArrayList(threadPool);
@@ -115,6 +124,12 @@ public class ThreadPool {
         return deadIds;
     }
 
+    /**
+     * This method would create a given number of threads and return their ids as a list.
+     *
+     * @param n Number of threads to add to the pool
+     * @return A list of added thread's id/
+     */
     public ArrayList<Long> add(int n) {
         ArrayList<PoolThread> temp = new ArrayList<>();
         ArrayList<Long> newIds = new ArrayList<>();
@@ -132,7 +147,10 @@ public class ThreadPool {
         return newIds;
     }
 
-    public ArrayList<Long> getThreadIds(){
+    /**
+     * @return A list of all thead's id in the thread pool.
+     */
+    public ArrayList<Long> getThreadIds() {
         ArrayList<Long> threadIds = new ArrayList<>();
         for (PoolThread thread : threadPool) {
             threadIds.add(thread.getId());

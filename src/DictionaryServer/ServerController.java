@@ -22,6 +22,11 @@ public class ServerController {
     ServerGUI serverGUI;
 
 
+    /**
+     * The singleton getter.
+     *
+     * @return The controller.
+     */
     public synchronized static ServerController getServerController() {
         return serverController;
     }
@@ -31,6 +36,11 @@ public class ServerController {
 
     }
 
+    /**
+     * This method add thread ids given to the GUI.
+     *
+     * @param threadIds A list of long which represents thread ids.
+     */
     public synchronized void addThreadsOnGUI(ArrayList<Long> threadIds) {
         JTable s = this.serverGUI.getTable1();
         // add row dynamically into the table
@@ -41,6 +51,13 @@ public class ServerController {
         this.serverGUI.getPoolCount().setText(Integer.toString(DictionaryServer.getServer().getThreadPool().getThreads().size()) + "/" + DictionaryServer.getServer().getMaxPoolSize());
     }
 
+
+    /**
+     * This methods would change the given thread's id status on the GUI.
+     *
+     * @param threadID The id of thread to change
+     * @param status   The status to show.
+     */
     public synchronized void changeThreadStateOnGUI(long threadID, String status) {
 
         DefaultTableModel dtm = serverGUI.getDtm();
@@ -54,7 +71,10 @@ public class ServerController {
     }
 
 
-    public synchronized void killThreads() {
+    /**
+     * This method would interrupted the selected thread in the GUI.
+     */
+    public void killThreads() {
         if (DictionaryServer.getServer().getThreadPool().getRunningThreadCount() <= 1) {
             // only one thread left, not a valid operation.
             // user can just shut down the server.
@@ -68,6 +88,9 @@ public class ServerController {
         }
     }
 
+    /**
+     * This method would clear the interrupted threads on the GUI.
+     */
     public synchronized void cleanDeadThreads() {
         ArrayList<Long> deadIds = DictionaryServer.getServer().getThreadPool().clean();
         DefaultTableModel dtm = serverGUI.getDtm();
@@ -80,7 +103,7 @@ public class ServerController {
             }
         }
 
-        this.serverGUI.getPoolCount().setText(Integer.toString(DictionaryServer.getServer().getThreadPool().getThreads().size())+ "/" + DictionaryServer.getServer().getMaxPoolSize());
+        this.serverGUI.getPoolCount().setText(Integer.toString(DictionaryServer.getServer().getThreadPool().getThreads().size()) + "/" + DictionaryServer.getServer().getMaxPoolSize());
 
     }
 
@@ -92,7 +115,10 @@ public class ServerController {
 
     }
 
-    public void add() {
+    /**
+     * This method would fill the thread pool till containing max number of threads.
+     */
+    public void fulfill() {
         int n = DictionaryServer.getServer().getMaxPoolSize() - DictionaryServer.getServer().getThreadPool().getThreads().size();
         addThreadsOnGUI(DictionaryServer.getServer().getThreadPool().add(n));
     }

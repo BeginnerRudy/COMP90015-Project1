@@ -49,6 +49,9 @@ public class DictionaryClient {
         this.connection = new ClientConnection(address, port);
     }
 
+    /**
+     * This method disconnect the client and the server
+     */
     public void disconnect(){
         this.connection.disconnect();
     }

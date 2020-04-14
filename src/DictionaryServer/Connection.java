@@ -1,6 +1,5 @@
 package DictionaryServer;
 
-import DictionaryServer.Services.InactiveServiceException;
 import DictionaryServer.Services.Service;
 import DictionaryServer.Services.ServiceFactory;
 import DictionaryServer.Services.ServiceNotFoundException;
@@ -10,10 +9,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.net.*;
 
 /**
  * This class represents a tcp connection between client and server.
@@ -41,7 +37,6 @@ public class Connection implements Runnable {
     @Override
     public void run() {
         try {
-            // TODO set time out marcos
             socket.setSoTimeout(DictionaryServer.getServer().getInactiveTimeout());
             JSONObject rep = new JSONObject();
             rep.put(ServiceFactory.RESPONSE_CODE_KEY, "Connected and serving.");
@@ -76,10 +71,16 @@ public class Connection implements Runnable {
 
     }
 
-    public InetAddress getIP() {
-        return this.socket.getInetAddress();
+    /**
+     * @return The Ip address of current socket connection.
+     */
+    public SocketAddress getIP() {
+        return this.socket.getRemoteSocketAddress();
     }
 
+    /**
+     * @return The socket.
+     */
     public Socket getSocket() {
         return socket;
     }

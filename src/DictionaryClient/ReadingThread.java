@@ -23,6 +23,7 @@ public class ReadingThread extends Thread {
     public void run() {
         try {
             this.connected = true;
+            // continually reading from the server
             while (true) {
                 // read from the server
                 JSONObject reply = (JSONObject) reader.readObject();

@@ -48,6 +48,11 @@ public class Dictionary {
     }
 
 
+    /**
+     * This is the singleton getter.
+     *
+     * @return The dictionary
+     */
     public static Dictionary getDictionary() {
         return Dictionary.dictionary;
     }
