@@ -30,35 +30,26 @@ public class ReadingThread extends Thread {
                 // ask the controller to update UI
                 ClientController.getClientController().updateUI(reply);
             }
-        } catch (UnknownHostException e) {
-            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage() + " is unknown.");
-            // construct the failure reply
-            JSONObject reply = new JSONObject();
-            reply.put(DictionaryClient.RESPONSE_CODE_KEY, DictionaryClient.FAILURE_CODE);
-            reply.put(DictionaryClient.RESPONSE_MESSAGE_KEY, e.getMessage() + " is unknown.");
-//            e.printStackTrace();
-        } catch (ConnectException e) {
-            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
-            // construct the failure reply
-            JSONObject reply = new JSONObject();
-            reply.put(DictionaryClient.RESPONSE_CODE_KEY, DictionaryClient.FAILURE_CODE);
-            reply.put(DictionaryClient.RESPONSE_MESSAGE_KEY, "Failed to connect to the server: " + e.getMessage());
-//            e.printStackTrace();
-            ClientController.getClientController().setGUIConnectivity("Disconnected.");
-        } catch (IOException e) {
-            Utility.printClientMsg("Connection", "Failed to connect to the server, connection closed.");
-            // construct the failure reply
-            JSONObject reply = new JSONObject();
-            reply.put(DictionaryClient.RESPONSE_CODE_KEY, DictionaryClient.FAILURE_CODE);
-            reply.put(DictionaryClient.RESPONSE_MESSAGE_KEY, "Failed to add a word to the server");
-            ClientController.getClientController().setGUIConnectivity("Disconnected.");
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            Utility.printClientMsg("Response msg", "The server side response message is not recognisable. ");
-//            e.printStackTrace();
+        } catch (Exception e) {
+            handleExceptions(e);
         }
 
         this.connected = false;
+    }
+
+    private void handleExceptions(Exception e) {
+        if (e instanceof UnknownHostException) {
+            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage() + " is unknown.");
+            ClientController.getClientController().setGUIConnectivity("Disconnected.");
+        } else if (e instanceof ConnectException) {
+            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
+            ClientController.getClientController().setGUIConnectivity("Disconnected.");
+        } else if (e instanceof IOException) {
+            Utility.printClientMsg("Connection", "Failed to connect to the server, connection closed.");
+            ClientController.getClientController().setGUIConnectivity("Disconnected.");
+        } else if (e instanceof ClassNotFoundException) {
+            Utility.printClientMsg("Response msg", "The server side response message is not recognisable. ");
+        }
     }
 
     /**
