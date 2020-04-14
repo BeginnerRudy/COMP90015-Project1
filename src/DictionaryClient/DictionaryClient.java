@@ -38,7 +38,7 @@ public class DictionaryClient {
     private ObjectInputStream reader;
     private ReadingThread readingThread;
 
-    public static DictionaryClient getClient(){
+    public static DictionaryClient getClient() {
         return DictionaryClient.client;
     }
 
@@ -168,6 +168,7 @@ public class DictionaryClient {
 
     /**
      * This method is resonsible for handling the IOException.
+     *
      * @param e The IOException object
      */
     private void IOExceptionHandler(IOException e) {
@@ -211,8 +212,7 @@ public class DictionaryClient {
             // setup the client
             ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
             clientGUI.setVisible(true);
-            ClientController clientController = ClientController.getClientController();
-            clientController.setClientGUI(clientGUI);
+            ClientController.getClientController().init(clientGUI);
             DictionaryClient.getClient().init(address, port);
 
         } catch (ParseException e) {

@@ -19,8 +19,6 @@ import java.util.List;
 public class ServerController {
     static ServerController serverController = new ServerController();
     public static final String THREAD = "Thread ";
-    DictionaryServer server;
-
     ServerGUI serverGUI;
 
 
@@ -28,8 +26,7 @@ public class ServerController {
         return serverController;
     }
 
-    public void init(DictionaryServer dictionaryServer, ServerGUI serverGUI) {
-        this.server = dictionaryServer;
+    public void init(ServerGUI serverGUI) {
         this.serverGUI = serverGUI;
 
     }
@@ -41,7 +38,7 @@ public class ServerController {
             this.serverGUI.getDtm().addRow(new Object[]{THREAD + threadId, "idle"});
         }
 
-        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size()) + "/" + this.server.getMaxPoolSize());
+        this.serverGUI.getPoolCount().setText(Integer.toString(DictionaryServer.getServer().getThreadPool().getThreads().size()) + "/" + DictionaryServer.getServer().getMaxPoolSize());
     }
 
     public synchronized void changeThreadStateOnGUI(long threadID, String status) {
@@ -58,7 +55,7 @@ public class ServerController {
 
 
     public synchronized void killThreads() {
-        if (this.server.getThreadPool().getRunningThreadCount() <= 1) {
+        if (DictionaryServer.getServer().getThreadPool().getRunningThreadCount() <= 1) {
             // only one thread left, not a valid operation.
             // user can just shut down the server.
             JOptionPane.showMessageDialog(null, "Caution! Only one thread working! Not allowed to terminate it.");
@@ -67,12 +64,12 @@ public class ServerController {
             int row = this.serverGUI.getTable1().getSelectedRow();
             String s = (String) this.serverGUI.getTable1().getValueAt(row, 0);
             long id = Integer.parseInt(s.split(" ")[1]);
-            this.server.getThreadPool().stop(id);
+            DictionaryServer.getServer().getThreadPool().stop(id);
         }
     }
 
     public synchronized void cleanDeadThreads() {
-        ArrayList<Long> deadIds = this.server.getThreadPool().clean();
+        ArrayList<Long> deadIds = DictionaryServer.getServer().getThreadPool().clean();
         DefaultTableModel dtm = serverGUI.getDtm();
 
 
@@ -83,7 +80,7 @@ public class ServerController {
             }
         }
 
-        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size())+ "/" + this.server.getMaxPoolSize());
+        this.serverGUI.getPoolCount().setText(Integer.toString(DictionaryServer.getServer().getThreadPool().getThreads().size())+ "/" + DictionaryServer.getServer().getMaxPoolSize());
 
     }
 
@@ -91,12 +88,12 @@ public class ServerController {
      * This method is used to shut the server.
      */
     public void shutDownServer() {
-        this.server.shutDown();
+        DictionaryServer.getServer().shutDown();
 
     }
 
     public void add() {
-        int n = this.server.getMaxPoolSize() - this.server.getThreadPool().getThreads().size();
-        addThreadsOnGUI(this.server.getThreadPool().add(n));
+        int n = DictionaryServer.getServer().getMaxPoolSize() - DictionaryServer.getServer().getThreadPool().getThreads().size();
+        addThreadsOnGUI(DictionaryServer.getServer().getThreadPool().add(n));
     }
 }

@@ -17,6 +17,8 @@ import org.apache.commons.cli.*;
  * dictionary sever should have.
  */
 public class DictionaryServer {
+    private static DictionaryServer server = new DictionaryServer();
+
     private int port;
     private String dictionaryFilePath;
     private ServerSocket serverSocket;
@@ -27,8 +29,11 @@ public class DictionaryServer {
 
     private int inactiveTimeout;
 
+    public static DictionaryServer getServer(){
+        return DictionaryServer.server;
+    }
 
-    public DictionaryServer(int port, String dictionaryFilePath, int maxPoolSize, int inactiveTimeout) {
+    public void init(int port, String dictionaryFilePath, int maxPoolSize, int inactiveTimeout) {
         this.port = port;
         this.maxPoolSize = maxPoolSize;
         this.threadPool = new ThreadPool(this.maxPoolSize);
@@ -126,10 +131,8 @@ public class DictionaryServer {
             // create a server
             ServerGUI serverGUI = new ServerGUI("Dictionary Server");
             serverGUI.setVisible(true);
-
-            ServerController serverController = ServerController.getServerController();
-            DictionaryServer server = new DictionaryServer(port, filePath, maxPoolSize, inactiveTimeout);
-            serverController.init(server, serverGUI);
+            ServerController.getServerController().init(serverGUI);
+            DictionaryServer.getServer().init(port, filePath, maxPoolSize, inactiveTimeout);
 
             // execute the server
             server.execute();

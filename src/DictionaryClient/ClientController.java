@@ -29,7 +29,7 @@ public class ClientController {
      *
      * @param clientGUI The ClientGUI the controller needs to control.
      */
-    public void setClientGUI(ClientGUI clientGUI) {
+    public void init(ClientGUI clientGUI) {
         this.clientGUI = clientGUI;
     }
 
