@@ -5,6 +5,7 @@
 
 package DictionaryClient;
 
+import org.apache.commons.cli.*;
 import org.json.simple.JSONObject;
 
 import java.io.*;
@@ -178,17 +179,43 @@ public class DictionaryClient {
         }
     }
 
+    private static void addOption(Options options, String opt, String longOpt, Boolean hasArg, String description) {
+        Option input = new Option(opt, longOpt, hasArg, description);
+        input.setRequired(true);
+        options.addOption(input);
+    }
 
     /**
      * @param args The commandline args
      *             This is the main method of the Dictionary client, controls the execution flow of the client.
      */
     public static void main(String[] args) {
-        ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
-        clientGUI.setVisible(true);
-        ClientController clientController = ClientController.getClientController();
-        clientController.setClientGUI(clientGUI);
-        DictionaryClient client = new DictionaryClient("localhost", 5000);
-        clientController.setDictionaryClient(client);
+        Options options = new Options();
+        addOption(options, "a", "address", true, "Server address");
+        addOption(options, "p", "port", true, "Server port");
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            // parse command line args
+
+            String address = cmd.getOptionValue("address-path");
+            int port = Integer.parseInt(cmd.getOptionValue("port"));
+
+            ClientGUI clientGUI = new ClientGUI("Multi-Threading Dictionary Client");
+            clientGUI.setVisible(true);
+            ClientController clientController = ClientController.getClientController();
+            clientController.setClientGUI(clientGUI);
+            DictionaryClient client = new DictionaryClient(address, port);
+            clientController.setDictionaryClient(client);
+
+        } catch (ParseException e) {
+            System.out.println("Client fail to start.");
+            System.out.println(e.getMessage());
+            formatter.printHelp("utility-name", options);
+
+            System.exit(1);
+        }
     }
 }

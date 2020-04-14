@@ -50,14 +50,15 @@ public class ServerGUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
                 serverController.shutDownServer();
+                super.windowClosing(e);
             }
         });
 
         setKillThreadButton();
         setAddButton();
         setClearDeadThreadsButton();
+        setTurnOffServerButton();
     }
 
 
@@ -82,6 +83,19 @@ public class ServerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 serverController.killThreads();
+            }
+        });
+    }
+
+    /**
+     * Set the killThreadButton logic
+     */
+    public void setTurnOffServerButton() {
+        turnOffServerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                serverController.shutDownServer();
+                System.exit(1);
             }
         });
     }

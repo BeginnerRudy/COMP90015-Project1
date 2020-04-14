@@ -41,7 +41,7 @@ public class ServerController {
             this.serverGUI.getDtm().addRow(new Object[]{THREAD + threadId, "idle"});
         }
 
-        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size()) + "/" + DictionaryServer.MAX_T);
+        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size()) + "/" + this.server.getMaxPoolSize());
     }
 
     public synchronized void changeThreadStateOnGUI(long threadID, String status) {
@@ -83,7 +83,7 @@ public class ServerController {
             }
         }
 
-        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size())+ "/" + DictionaryServer.MAX_T);
+        this.serverGUI.getPoolCount().setText(Integer.toString(this.server.getThreadPool().getThreads().size())+ "/" + this.server.getMaxPoolSize());
 
     }
 
@@ -96,7 +96,7 @@ public class ServerController {
     }
 
     public void add() {
-        int n = DictionaryServer.MAX_T - this.server.getThreadPool().getThreads().size();
+        int n = this.server.getMaxPoolSize() - this.server.getThreadPool().getThreads().size();
         addThreadsOnGUI(this.server.getThreadPool().add(n));
     }
 }
