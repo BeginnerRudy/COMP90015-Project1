@@ -66,6 +66,7 @@ public class DictionaryClient {
         this.readingThread = new ReadingThread(this.reader);
         this.readingThread.start();
         ClientController.getClientController().setGUIConnectivity("Connected ");
+        Utility.printClientMsg("Connection", "connect to the server");
     }
 
     private void reconnectToWrite(JSONObject request) throws IOException {
@@ -73,13 +74,13 @@ public class DictionaryClient {
         try {
             this.writer.writeObject(request);
         } catch (IOException e) {
-            System.out.println("reconnect to server.");
+            Utility.printClientMsg("Connection", "reconnect to server ...");
             ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
             this.connectToServer();
             this.writer.writeObject(request);
         } catch (NullPointerException e) {
             // when the client failed to connect for the first time, then writer would be null
-            System.out.println("reconnect to server.");
+            Utility.printClientMsg("Connection", "reconnect to server ...");
             ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
             this.connectToServer();
             this.writer.writeObject(request);
@@ -92,21 +93,23 @@ public class DictionaryClient {
      */
     public void disconnect() {
         try {
-            if (!this.socket.isClosed()) {
+            if (this.readingThread.isConnected()) {
 
                 this.reader.close();
                 this.writer.close();
                 this.socket.close();
-                System.out.println("The connection is closed now.");
+                Utility.printClientMsg("Connection", "The connection is closed now.");
             } else {
-                System.out.println("Nothing to close, the client and server are disconnect.");
+                Utility.printClientMsg("Connection", "Nothing to close, the client and server are disconnect.");
                 ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Utility.printClientMsg("Connection", "NOTHING TO DISCONNECT.");
             System.out.println("Teardown error");
         } catch (NullPointerException e) {
+            Utility.printClientMsg("Connection", "NOTHING TO DISCONNECT.");
             ClientController.getClientController().setGUIConnectivity("NOTHING TO DISCONNECT.");
         }
     }
@@ -173,15 +176,13 @@ public class DictionaryClient {
      */
     private void IOExceptionHandler(IOException e) {
         if (e instanceof UnknownHostException) {
-            // construct the failure reply
-            System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage() + " is unknown.");
+            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage() + " is unknown.");
             ClientController.getClientController().setGUIConnectivity("Server addr is unknown.");
         } else if (e instanceof ConnectException) {
-            System.out.println(RESPONSE_MESSAGE_KEY + "Failed to connect to the server: " + e.getMessage());
+            Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
             ClientController.getClientController().setGUIConnectivity("Server is unavailable now, try later.");
         } else {
-            // construct the failure reply
-            System.out.println("Client side IO exception");
+            Utility.printClientMsg("Connection", "Client side IO exception");
             ClientController.getClientController().setGUIConnectivity("Client side IO exception");
         }
     }

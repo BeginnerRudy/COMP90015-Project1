@@ -8,6 +8,7 @@ package DictionaryServer.ThreadPool;
 import DictionaryServer.DictionaryServer;
 import DictionaryServer.ServerController;
 import DictionaryServer.Connection;
+import DictionaryServer.Utility;
 
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
@@ -31,15 +32,15 @@ public class PoolThread extends Thread {
             try {
                 this.connection = (Connection) taskQueue.take();
                 ServerController.getServerController().changeThreadStateOnGUI(this.getId(), connection.getIP().toString());
-                DictionaryServer.printServerMsg("Thread processing new task!");
+                Utility.printServerMsg("Thread", "Thread processing new task!");
                 connection.run();
-                DictionaryServer.printServerMsg("finished");
+                Utility.printServerMsg("Thread", "Finish current serving.");
                 if (!this.isStop) {
                     ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "Idle");
                 }
             } catch (InterruptedException e) {
                 this.interrupt();
-                DictionaryServer.printServerMsg("The thread in thread pool is interrupted due to server is closed.");
+                Utility.printServerMsg("Thread", "The thread is interrupted.");
             }
         }
     }
@@ -51,15 +52,17 @@ public class PoolThread extends Thread {
         this.isStop = true;
         ServerController.getServerController().changeThreadStateOnGUI(this.getId(), "interrupted");
         this.interrupt();
-        try {
-            if (connection != null) {
 
+
+        if (connection != null) {
+            try {
                 this.connection.getSocket().close();
+
+            } catch (IOException e) {
+//            e.printStackTrace();
+                Utility.printServerMsg("Connection", "The socket is already closed.");
+
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
     }
 }

@@ -7,6 +7,7 @@ package DictionaryServer.ThreadPool;
 
 
 import DictionaryServer.ServerController;
+import DictionaryServer.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,8 @@ public class ThreadPool {
             if (this.isStop) throw new IllegalStateException("Thread pool is terminated!");
             this.taskQueue.put(task);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Utility.printServerMsg("Thread", "The thread is interrupted.");
         }
     }
 

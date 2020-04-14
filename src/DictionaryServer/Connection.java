@@ -6,11 +6,14 @@ import DictionaryServer.Services.ServiceFactory;
 import DictionaryServer.Services.ServiceNotFoundException;
 import org.json.simple.JSONObject;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /**
  * This class represents a tcp connection between client and server.
@@ -26,7 +29,7 @@ public class Connection implements Runnable {
 
 
     public Connection(Socket socket, int inactiveTimeout) throws IOException {
-        this.inactiveTimeout = inactiveTimeout*1000;
+        this.inactiveTimeout = inactiveTimeout * 1000;
         this.socket = socket;
         this.serviceFactory = ServiceFactory.getServiceFactory();
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
@@ -49,21 +52,28 @@ public class Connection implements Runnable {
                 Service service = serviceFactory.getService(this.socket, writer, reader);
                 service.run();
             }
-        } catch (ServiceNotFoundException e) {
-            e.printStackTrace();
-        } catch (InactiveServiceException e) {
+        } catch (SocketTimeoutException e) {
+//            e.printStackTrace();
             try {
-                writer.close();
-                reader.close();
                 socket.close();
-                System.out.println("Socket closed due to time out");
-            }catch (IOException ee){
-                ee.printStackTrace();
+            } catch (IOException ex) {
+//                ex.printStackTrace();
+                Utility.printServerMsg("Connection", "IO exception (inactive timeout).");
             }
-            e.printStackTrace();
+            Utility.printServerMsg("Connection", "Close connection due to inactive timeout.");
+        } catch (EOFException e) {
+            Utility.printServerMsg("Connection", "The connection is closed by client.");
+        } catch (SocketException e) {
+            Utility.printServerMsg("Connection", "The connection is closed by server.");
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Connection class IO exception in run method");
+//            e.printStackTrace();
+            Utility.printServerMsg("Connection", "IO exception.");
+        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+            Utility.printServerMsg("Casting error", "Fail to cast to JSONObject.");
+        } catch (ServiceNotFoundException e) {
+//            e.printStackTrace();
+            Utility.printServerMsg("Service error", "Service not found.");
         }
 
     }

@@ -27,17 +27,4 @@ public abstract class Service implements Runnable {
         this.writer = writer;
         this.body = body;
     }
-
-
-    /**
-     * This method aims to close the all the I/O stuffs safely.
-     */
-    protected void closeOutput() {
-        try {
-            this.writer.close();
-            this.socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

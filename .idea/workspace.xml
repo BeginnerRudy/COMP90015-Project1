@@ -3,12 +3,26 @@
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
       <artifact name="DictionaryClient:jar" />
+      <artifact name="DictionaryServer:jar" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/DictionaryClient/Utility.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DictionaryServer/Utility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/DictionaryServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/AddService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/DeleteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/SearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Services/ServiceFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/PoolThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/ThreadPool/ThreadPool.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -102,6 +116,7 @@
     <configuration name="DictionaryClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.DictionaryClient" />
       <module name="Multithreaded Dictionary Server" />
+      <option name="PROGRAM_PARAMETERS" value="-a localhost -p 5000" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="DictionaryClient.*" />
@@ -128,7 +143,7 @@
     <configuration name="DictionaryServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryServer.DictionaryServer" />
       <module name="Multithreaded Dictionary Server" />
-      <option name="PROGRAM_PARAMETERS" value="0 5000 &quot;./src/DictionaryServer/data/dictionary.json&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="-p 5000 -s 3 -t 5 -f &quot;./src/DictionaryServer/data/dictionary.json&quot;" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="DictionaryServer.Services.*" />
@@ -148,8 +163,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DictionaryServer" />
         <item itemvalue="Application.DictionaryClient" />
+        <item itemvalue="Application.DictionaryServer" />
         <item itemvalue="Application.Demo" />
         <item itemvalue="Application.DictionaryClient2" />
         <item itemvalue="Application.ClientGUI" />
@@ -192,7 +207,7 @@
       <workItem from="1586763168476" duration="876000" />
       <workItem from="1586818601098" duration="3966000" />
       <workItem from="1586823209385" duration="721000" />
-      <workItem from="1586824086045" duration="5427000" />
+      <workItem from="1586824086045" duration="14087000" />
     </task>
     <servers />
   </component>

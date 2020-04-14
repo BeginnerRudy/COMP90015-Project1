@@ -29,7 +29,7 @@ public class DictionaryServer {
 
     private int inactiveTimeout;
 
-    public static DictionaryServer getServer(){
+    public static DictionaryServer getServer() {
         return DictionaryServer.server;
     }
 
@@ -60,9 +60,10 @@ public class DictionaryServer {
             // Close the server socket
             this.serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Utility.printServerMsg("Server", "Server socket already closed");
         }
-        printServerMsg("Server closing ...");
+        Utility.printServerMsg("Server", "Server closing ...");
     }
 
     public ThreadPool getThreadPool() {
@@ -92,10 +93,10 @@ public class DictionaryServer {
                 threadPool.execute(connection);
             }
         } catch (SocketException e) {
-            printServerMsg("Server socket is closed, the server is closed.");
+            Utility.printServerMsg("Server", "Server socket is closed, the server is closed.");
         } catch (IOException e) {
-            System.out.println("Server side IO exception");
-            e.printStackTrace();
+            Utility.printServerMsg("Server", "Server socket is closed unexpectedly.");
+//            e.printStackTrace();
         }
     }
 
@@ -138,23 +139,13 @@ public class DictionaryServer {
             server.execute();
 
         } catch (ParseException e) {
-            printServerMsg("Server fail to start.");
-            printServerMsg(e.getMessage());
+            Utility.printServerMsg("Server", "Server fail to start.");
+            Utility.printServerMsg("Server", e.getMessage());
             formatter.printHelp("utility-name", options);
 
             System.exit(1);
         }
 
-    }
-
-    /**
-     * @param msg The message to be print out
-     *            This method aims to provide a consistent format of server message, every class
-     *            which wants to send output should use this method.
-     */
-    public static void printServerMsg(String msg) {
-        String prompt = ">>> ";
-        System.out.println(prompt + msg);
     }
 
 }

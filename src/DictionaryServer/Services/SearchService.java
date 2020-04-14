@@ -6,6 +6,7 @@
 package DictionaryServer.Services;
 
 import DictionaryServer.Dictionary;
+import DictionaryServer.Utility;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class SearchService extends Service {
                 reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_SEARCH);
                 reply.put(ServiceFactory.MEANING_KEY, meaning);
                 super.writer.writeObject(reply);
-                System.out.println(ServiceFactory.SUCCESS_SEARCH + "Successfully searched");
+                Utility.printServerExceptionMsg("Search", ServiceFactory.SUCCESS_SEARCH, "Successfully searched");
             }else{
                 // The word is not the dictionary, return fail to search
                 // construct reply
@@ -47,12 +48,13 @@ public class SearchService extends Service {
                 reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
                 reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "The word not found.");
                 super.writer.writeObject(reply);
-                System.out.println(ServiceFactory.FAILURE_CODE + "Word not found");
+                Utility.printServerExceptionMsg("Search", ServiceFactory.FAILURE_CODE, "Word not found");
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Utility.printServerMsg("Connection: ", "Connection is closed by server or client.");
+
         }
-//        super.closeOutput();
     }
 }

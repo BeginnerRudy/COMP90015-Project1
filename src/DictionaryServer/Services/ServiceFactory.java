@@ -5,10 +5,12 @@
 
 package DictionaryServer.Services;
 
+import DictionaryServer.Utility;
 import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 /**
@@ -47,40 +49,28 @@ public class ServiceFactory {
      * @return The correct service, the client ask for.
      */
     public Service getService(Socket socket, ObjectOutputStream writer, ObjectInputStream reader)
-            throws ServiceNotFoundException, InactiveServiceException, SocketTimeoutException {
-        try {
-            // read request from the socket
-            JSONObject request = (JSONObject) reader.readObject();
+            throws ServiceNotFoundException, IOException, ClassNotFoundException {
+        // read request from the socket
+        JSONObject request = (JSONObject) reader.readObject();
 
 
-            // parse the request into request method and request body
-            String requestMethod = (String) request.get(REQUEST_HEADER);
-            request.remove(REQUEST_HEADER);
-            JSONObject body = request;
+        // parse the request into request method and request body
+        String requestMethod = (String) request.get(REQUEST_HEADER);
+        request.remove(REQUEST_HEADER);
+        JSONObject body = request;
 
-            // create and return service depends on the method.
-            switch (requestMethod) {
-                case ADD_METHOD:
-                    return new AddService(socket, body, writer);
-                case DELETE_METHOD:
-                    return new DeleteService(socket, body, writer);
-                case SEARCH_METHOD:
-                    return new SearchService(socket, body, writer);
-                default:
-                    throw new ServiceNotFoundException("The server does not provide " + requestMethod);
-            }
-
-        }catch (SocketTimeoutException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        // create and return service depends on the method.
+        switch (requestMethod) {
+            case ADD_METHOD:
+                return new AddService(socket, body, writer);
+            case DELETE_METHOD:
+                return new DeleteService(socket, body, writer);
+            case SEARCH_METHOD:
+                return new SearchService(socket, body, writer);
+            default:
+                throw new ServiceNotFoundException("Service not found.");
         }
 
-        // TODO multiple errors throws same exception here
-        //  time out and client disconnected actively
-        throw new InactiveServiceException("Client inactive, disconnected");
     }
 
 }

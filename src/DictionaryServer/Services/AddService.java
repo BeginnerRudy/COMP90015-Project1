@@ -6,6 +6,7 @@
 package DictionaryServer.Services;
 
 import DictionaryServer.Dictionary;
+import DictionaryServer.Utility;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -55,29 +56,19 @@ public class AddService extends Service {
 
                 // send reply to client
                 super.writer.writeObject(reply);
-                System.out.println(ServiceFactory.FAILURE_CODE + "Failed to add, because the word is already in dictionary. ");
-            }
-            // if the meaning is null
-            else if (this.meaning == null) {
-                // construct reply JSON object
-                reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.FAILURE_CODE);
-                reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, "Fail to add, because the meaning is empty");
-                super.writer.writeObject(reply);
-                System.out.println(ServiceFactory.FAILURE_CODE + "Fail to add, because the meaning is empty");
-                // if the word is not duplicate and the meaning is not null.
+                Utility.printServerExceptionMsg("Add", ServiceFactory.FAILURE_CODE, "Failed to add, because the word is already in dictionary. ");
             } else {
                 reply.put(ServiceFactory.RESPONSE_CODE_KEY, ServiceFactory.SUCCESS_ADD);
                 String response_msg = "Successfully add: " + word + " - " + meaning;
                 reply.put(ServiceFactory.RESPONSE_MESSAGE_KEY, response_msg);
                 Dictionary.getDictionary().getHashmap().put(word, meaning);
                 super.writer.writeObject(reply);
-                System.out.println(Dictionary.getDictionary().getHashmap());
-                System.out.println(ServiceFactory.SUCCESS_ADD + "Successfully add: " + word + " - " + meaning);
+                Utility.printServerExceptionMsg("Add", ServiceFactory.SUCCESS_ADD, "Successfully add, " + word + " - " + meaning);
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Utility.printServerMsg("Connection: ", "Connection is closed by server or client.");
         }
-//        super.closeOutput();
     }
 }
