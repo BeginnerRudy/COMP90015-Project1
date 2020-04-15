@@ -19,8 +19,6 @@ import java.net.UnknownHostException;
 public class ReadingThread extends Thread {
     private ObjectInputStream reader;
 
-    private boolean connected = false;
-
     public ReadingThread(ObjectInputStream reader) {
         this.reader = reader;
     }
@@ -28,7 +26,7 @@ public class ReadingThread extends Thread {
     @Override
     public void run() {
         try {
-            this.connected = true;
+            DictionaryClient.getClient().getConnection().setConnected(true);
             // continually reading from the server
             while (true) {
                 // read from the server
@@ -40,7 +38,7 @@ public class ReadingThread extends Thread {
             handleExceptions(e);
         }
 
-        this.connected = false;
+        DictionaryClient.getClient().getConnection().setConnected(false);
     }
 
     private void handleExceptions(Exception e) {
@@ -56,15 +54,6 @@ public class ReadingThread extends Thread {
         } else if (e instanceof ClassNotFoundException) {
             Utility.printClientMsg("Response msg", "The server side response message is not recognisable. ");
         }
-    }
-
-    /**
-     * This methods returns whether the reading channel is connected.
-     *
-     * @return isConnected
-     */
-    public synchronized boolean isConnected() {
-        return connected;
     }
 
 }

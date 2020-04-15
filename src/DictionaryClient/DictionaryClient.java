@@ -47,7 +47,15 @@ public class DictionaryClient {
      */
     public void init(String address, int port) {
         // connect to the server
-        this.connection = new ClientConnection(address, port);
+        this.connection = new ClientConnection();
+        this.connection.init(address, port);
+    }
+
+    /**
+     * @return The Connection object represents connection between server and client.
+     */
+    public ClientConnection getConnection() {
+        return connection;
     }
 
     /**

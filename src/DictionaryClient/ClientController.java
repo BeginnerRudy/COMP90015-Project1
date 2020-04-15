@@ -8,6 +8,7 @@ package DictionaryClient;
 
 import org.json.simple.JSONObject;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -33,7 +34,6 @@ public class ClientController {
     public void init(ClientGUI clientGUI) {
         this.clientGUI = clientGUI;
     }
-
 
 
     /**
@@ -62,7 +62,7 @@ public class ClientController {
             clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
             clientGUI.getServerResponse().setText(message);
 
-        } else{
+        } else {
             clientGUI.getConnectivity().setText((String) reply.get(DictionaryClient.RESPONSE_CODE_KEY));
         }
     }
@@ -75,11 +75,18 @@ public class ClientController {
      *                This method is responsible for handing the add button message from the GUI
      */
     public void add(String word, String meaning) {
-        if (word.strip() != "" && meaning.strip() != "") {
-            DictionaryClient.getClient().add(word, meaning);
+        if (DictionaryClient.getClient().getConnection().isConnecting()) {
+            JOptionPane.showMessageDialog(null, "The client is connecting, try later");
         } else {
-            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
-            this.clientGUI.getServerResponse().setText("Please enter both word and meaning.");
+            if (word.strip() != "" && meaning.strip() != "") {
+                if (!DictionaryClient.getClient().getConnection().isConnected()) {
+                    this.setGUIConnectivity("Reconnecting ... ");
+                }
+                DictionaryClient.getClient().add(word, meaning);
+            } else {
+                clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+                this.clientGUI.getServerResponse().setText("Please enter both word and meaning.");
+            }
         }
 
     }
@@ -90,11 +97,19 @@ public class ClientController {
      *             This method is responsible for handing the delete button message from the GUI
      */
     public void delete(String word) {
-        if (word.strip() != "") {
-            DictionaryClient.getClient().delete(word);
+        if (DictionaryClient.getClient().getConnection().isConnecting()) {
+            JOptionPane.showMessageDialog(null, "The client is connecting, try later");
         } else {
-            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
-            this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+
+            if (word.strip() != "") {
+                if (!DictionaryClient.getClient().getConnection().isConnected()) {
+                    ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
+                }
+                DictionaryClient.getClient().delete(word);
+            } else {
+                clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+                this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+            }
         }
     }
 
@@ -104,11 +119,16 @@ public class ClientController {
      *             This method is responsible for handing the search button message from the GUI
      */
     public void search(String word) {
-        if (word.strip() != "") {
-            DictionaryClient.getClient().search(word);
+        if (DictionaryClient.getClient().getConnection().isConnecting()) {
+            JOptionPane.showMessageDialog(null, "The client is connecting, try later");
         } else {
-            clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
-            this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+
+            if (word.strip() != "") {
+                DictionaryClient.getClient().search(word);
+            } else {
+                clientGUI.getServerResponse().setForeground(new Color(255, 0, 0));
+                this.clientGUI.getServerResponse().setText("Please enter non-empty word");
+            }
         }
     }
 
@@ -116,7 +136,12 @@ public class ClientController {
      * This method is responsible for disconnect the client and the server
      */
     public void disconnect() {
-        DictionaryClient.getClient().disconnect();
+
+        if (DictionaryClient.getClient().getConnection().isConnecting()) {
+            JOptionPane.showMessageDialog(null, "The client is connecting, try later");
+        } else {
+            DictionaryClient.getClient().disconnect();
+        }
     }
 
 
@@ -127,5 +152,6 @@ public class ClientController {
      */
     public void setGUIConnectivity(String msg) {
         this.clientGUI.getConnectivity().setText(msg);
+        this.clientGUI.getConnectivity().updateUI();
     }
 }

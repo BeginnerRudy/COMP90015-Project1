@@ -11,10 +11,7 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 
 /**
  * This class is responsible for client side connection
@@ -27,18 +24,36 @@ public class ClientConnection {
     private String address;
     private int port;
 
+    private boolean isConnected = false;
 
-    public ClientConnection(String address, int port) {
+    public boolean isConnected() {
+        return isConnected;
+    }
+    private boolean connecting = false;
+
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
+    public void init(String address, int port) {
         this.address = address;
         this.port = port;
         try {
 
             connectToServer();
-        }catch (IOException e){
+        } catch (IOException e) {
             IOExceptionHandler(e);
         }
     }
 
+
+    /**
+     * @return whether the connection between client and server is connected.
+     */
+    public boolean isConnecting() {
+        return connecting;
+    }
 
     /**
      * @throws IOException The IO exception.
@@ -46,11 +61,16 @@ public class ClientConnection {
      *                     This method aims to connect to a server by the address and port.
      */
     private void connectToServer() throws IOException {
-        this.socket = new Socket(address, port);
+        ClientController.getClientController().setGUIConnectivity("Connecting ....");
+        this.connecting = true;
+        this.socket = new Socket();
+        this.socket.connect(new InetSocketAddress(address, port), 5000);
         this.writer = new ObjectOutputStream(this.socket.getOutputStream());
         this.reader = new ObjectInputStream(this.socket.getInputStream());
         this.readingThread = new ReadingThread(this.reader);
         this.readingThread.start();
+        this.isConnected = true;
+        this.connecting = false;
         ClientController.getClientController().setGUIConnectivity("Connected ");
         Utility.printClientMsg("Connection", "connect to the server");
     }
@@ -67,14 +87,14 @@ public class ClientConnection {
         try {
             this.writer.writeObject(request);
         } catch (IOException e) {
-            Utility.printClientMsg("Connection", "reconnect to server ...");
             ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
+            Utility.printClientMsg("Connection", "reconnect to server ...");
             this.connectToServer();
             this.writer.writeObject(request);
         } catch (NullPointerException e) {
             // when the client failed to connect for the first time, then writer would be null
-            Utility.printClientMsg("Connection", "reconnect to server ...");
             ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
+            Utility.printClientMsg("Connection", "reconnect to server ...");
             this.connectToServer();
             this.writer.writeObject(request);
         }
@@ -86,11 +106,12 @@ public class ClientConnection {
      */
     public void disconnect() {
         try {
-            if (this.readingThread.isConnected()) {
+            if (this.isConnected) {
 
                 this.reader.close();
                 this.writer.close();
                 this.socket.close();
+                this.isConnected = false;
                 Utility.printClientMsg("Connection", "The connection is closed now.");
             } else {
                 Utility.printClientMsg("Connection", "Nothing to close, the client and server are disconnect.");
@@ -133,12 +154,17 @@ public class ClientConnection {
         } else if (e instanceof ConnectException) {
             Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
             ClientController.getClientController().setGUIConnectivity("Server is unavailable now, try later.");
-        } else if (e instanceof SocketException){
+        } else if (e instanceof SocketException) {
             Utility.printClientMsg("Connection", "Network is unreachable (connect failed)");
             ClientController.getClientController().setGUIConnectivity("Network is unreachable");
-        }else {
+        } else if (e instanceof  SocketTimeoutException) {
+            Utility.printClientMsg("Connection", "Network is unreachable (connect time out)");
+            ClientController.getClientController().setGUIConnectivity("Network is unreachable (time out)");
+        } else {
+//            e.printStackTrace();
             Utility.printClientMsg("Connection", "Client side IO exception");
             ClientController.getClientController().setGUIConnectivity("Client side IO exception");
         }
+        this.connecting = false;
     }
 }
