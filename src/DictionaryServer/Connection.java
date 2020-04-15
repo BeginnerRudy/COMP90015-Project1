@@ -1,3 +1,9 @@
+/*
+ * @Author: Renjie Meng
+ * @Student ID: 877396
+ * @Date: 2020 April
+ * */
+
 package DictionaryServer;
 
 import DictionaryServer.Services.Service;
