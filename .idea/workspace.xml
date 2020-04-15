@@ -8,7 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Connection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/Dictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryServer/data/dictionary.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryServer/data/dictionary.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -72,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DictionaryServer">
+  <component name="RunManager" selected="Application.DictionaryClient">
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DictionaryClient.ClientGUI" />
       <module name="Multithreaded Dictionary Server" />
@@ -194,7 +196,8 @@
       <workItem from="1586823209385" duration="721000" />
       <workItem from="1586824086045" duration="15212000" />
       <workItem from="1586845580301" duration="10528000" />
-      <workItem from="1586863727927" duration="986000" />
+      <workItem from="1586863727927" duration="2151000" />
+      <workItem from="1586985085576" duration="2897000" />
     </task>
     <servers />
   </component>

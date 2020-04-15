@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +22,7 @@ import org.json.simple.parser.ParseException;
  * JSON file when it is turned on or been shut down.
  */
 public class Dictionary {
-    private HashMap<String, String> hashmap;
+    private ConcurrentHashMap<String, String> hashmap;
 
 
     private static Dictionary dictionary = new Dictionary();
@@ -34,14 +35,14 @@ public class Dictionary {
         JSONParser parser = new JSONParser();
         // If we could successfully read the file
         try (Reader reader = new FileReader(dictionaryFilePath)) {
-            this.hashmap = (JSONObject) parser.parse(reader);
+            this.hashmap = new ConcurrentHashMap<>((HashMap<String, String>) parser.parse(reader));
             Utility.printServerMsg("Dictionary", "Dictionary Loading Successfully! ");
             // Error handling
         } catch (IOException e) {
-            this.hashmap = new HashMap<>();
+            this.hashmap = new ConcurrentHashMap<>();
             Utility.printServerMsg("Dictionary", "Dictionary Loading Failed: " + e.getMessage() + "\n Initialized with empty dictionary.");
         } catch (ParseException e) {
-            this.hashmap = new HashMap<>();
+            this.hashmap = new ConcurrentHashMap<>();
             Utility.printServerMsg("Dictionary", "Dictionary Loading Failed: The file is not in valid JSON format." + "\n Initialized with empty dictionary.");
         }
 
@@ -57,7 +58,7 @@ public class Dictionary {
         return Dictionary.dictionary;
     }
 
-    public HashMap<String, String> getHashmap() {
+    public ConcurrentHashMap<String, String> getHashmap() {
         return hashmap;
     }
 
@@ -69,7 +70,9 @@ public class Dictionary {
         //Write JSON file
         try{
             FileWriter file = new FileWriter(dictionaryFilePath);
-            file.write(((JSONObject) this.getHashmap()).toJSONString());
+
+            JSONObject jsonObject = new JSONObject(this.hashmap);
+            file.write(jsonObject.toJSONString());
             file.flush();
             Utility.printServerMsg("Dictionary", "Dictionary saved to the disk.");
         } catch (IOException e) {
@@ -79,6 +82,7 @@ public class Dictionary {
             e.printStackTrace();
             Utility.printServerMsg("Dictionary", "Fail to save, The file path is not valid.");
         } catch (java.lang.ClassCastException e) {
+            e.printStackTrace();
             Utility.printServerMsg("Dictionary", "Fail to save, The file path given is not valid");
         }
     }
