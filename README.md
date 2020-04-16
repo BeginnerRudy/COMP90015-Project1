@@ -30,3 +30,6 @@ By completing this assignment, I feel more familiar with the applicatoins I used
 - message exchage protocol with JSON
 - Java Swing GUI
 - MVC architecture pattern and GoF design patterns (singleton, factory and strategy)
+
+### Future improvement
+- The IO task on the server side is not conhesive, the Connection, ServiceFactory and Service all need to handle IO stuff, the better way should be delegate all IO stuff to Connection class and ServiceFactory, Service should call connection to read and write. 
