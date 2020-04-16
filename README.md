@@ -21,6 +21,8 @@ By completing this assignment, I feel more familiar with the applicatoins I used
 14. Design and implementing program is really fun! I feel so excited why I fully engaged in design then implement my design!
 15. knows how to use singleton
 16. When GUI is blocked no update could happen.
+18. Do not know how to update GUI and processing task concurrently. 
+19. understand why need config file. The program would have a lot of setting parameters, and if hard code them inside program, then it would hard to adpt different use environment, so store them in a config file, it is easy for user to change as well as reduce the hard code level. 
 ### Skill summary
 - Thread Pool
 - socket programming
