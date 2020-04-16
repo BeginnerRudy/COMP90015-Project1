@@ -10,7 +10,6 @@
     <list default="true" id="ddc6284e-bbb6-46aa-ba9b-a0088a7bedb0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/DictionaryClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryClient/ReadingThread.java" afterDir="false" />
     </list>
@@ -199,7 +198,7 @@
       <workItem from="1586824086045" duration="15212000" />
       <workItem from="1586845580301" duration="10528000" />
       <workItem from="1586863727927" duration="2151000" />
-      <workItem from="1586985085576" duration="11919000" />
+      <workItem from="1586985085576" duration="13352000" />
     </task>
     <servers />
   </component>

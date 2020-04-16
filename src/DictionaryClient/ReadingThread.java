@@ -45,12 +45,18 @@ public class ReadingThread extends Thread {
         if (e instanceof UnknownHostException) {
             Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage() + " is unknown.");
             ClientController.getClientController().setGUIConnectivity("Disconnected.");
+            DictionaryClient.getClient().getConnection().setConnected(false);
+
         } else if (e instanceof ConnectException) {
             Utility.printClientMsg("Connection", "Failed to connect to the server: " + e.getMessage());
             ClientController.getClientController().setGUIConnectivity("Disconnected.");
+            DictionaryClient.getClient().getConnection().setConnected(false);
+
         } else if (e instanceof IOException) {
             Utility.printClientMsg("Connection", "Failed to connect to the server, connection closed.");
             ClientController.getClientController().setGUIConnectivity("Disconnected.");
+            DictionaryClient.getClient().getConnection().setConnected(false);
+
         } else if (e instanceof ClassNotFoundException) {
             Utility.printClientMsg("Response msg", "The server side response message is not recognisable. ");
         }

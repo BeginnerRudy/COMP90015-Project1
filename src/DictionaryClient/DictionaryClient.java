@@ -142,4 +142,5 @@ public class DictionaryClient {
             System.exit(1);
         }
     }
+
 }

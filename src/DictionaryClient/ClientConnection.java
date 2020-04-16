@@ -29,6 +29,7 @@ public class ClientConnection {
     public boolean isConnected() {
         return isConnected;
     }
+
     private boolean connecting = false;
 
 
@@ -84,15 +85,9 @@ public class ClientConnection {
      */
     private void reconnectToWrite(JSONObject request) throws IOException {
         // send request to the server, reconnect if necessary
-        try {
+        if (this.isConnected) {
             this.writer.writeObject(request);
-        } catch (IOException e) {
-            ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
-            Utility.printClientMsg("Connection", "reconnect to server ...");
-            this.connectToServer();
-            this.writer.writeObject(request);
-        } catch (NullPointerException e) {
-            // when the client failed to connect for the first time, then writer would be null
+        } else {
             ClientController.getClientController().setGUIConnectivity("Reconnecting ... ");
             Utility.printClientMsg("Connection", "reconnect to server ...");
             this.connectToServer();
@@ -157,7 +152,7 @@ public class ClientConnection {
         } else if (e instanceof SocketException) {
             Utility.printClientMsg("Connection", "Network is unreachable (connect failed)");
             ClientController.getClientController().setGUIConnectivity("Network is unreachable");
-        } else if (e instanceof  SocketTimeoutException) {
+        } else if (e instanceof SocketTimeoutException) {
             Utility.printClientMsg("Connection", "Network is unreachable (connect time out)");
             ClientController.getClientController().setGUIConnectivity("Network is unreachable (time out)");
         } else {
