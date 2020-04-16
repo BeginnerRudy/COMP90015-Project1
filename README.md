@@ -20,7 +20,7 @@ By completing this assignment, I feel more familiar with the applicatoins I used
 13. More familar with the data flow from client to server and vice-versa. 
 14. Design and implementing program is really fun! I feel so excited why I fully engaged in design then implement my design!
 15. knows how to use singleton
-
+16. When GUI is blocked no update could happen.
 ### Skill summary
 - Thread Pool
 - socket programming
